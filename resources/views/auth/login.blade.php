@@ -69,7 +69,7 @@
                             <div class="form-check d-flex">
                                 <input class="form-check-input" type="checkbox" id="remember" name="remember"
                                     tabindex="3" {{ old('remember') ? 'checked' : '' }} />
-                                <label class="form-check-label" for="remember">{{ __('تزكرني') }}</label>
+                                <label class="form-check-label" for="remember">{{ __('تذكرني') }}</label>
                                 <div class="ms-auto">
                                     <a href="{{ route('signUp') }}">
                                         {{ __('تسجيل حساب جديد') }}
