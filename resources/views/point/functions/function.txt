@@ -1,0 +1,65 @@
+
+//searchfun
+
+$wallets = \App\Models\QVM\Wallet::get();
+   
+   $data = $request->all();
+
+
+  $wallets = Wallet::orderby('id','DESC')
+
+  ->where(function ($query) use ($data) {
+
+ 
+  if(isset($data['id']) &&  $data['id'] != null ){
+                   $query->where('id' , 'like'  , '%' .$data['id']. '%' );   
+               }
+
+                
+  if(isset($data['user_id']) &&  $data['user_id'] != null ){
+                   $query->where('user_id' , 'like'  , '%' .$data['user_id']. '%' );   
+               }
+
+                
+  if(isset($data['user_type']) &&  $data['user_type'] != null ){
+                   $query->where('user_type' , 'like'  , '%' .$data['user_type']. '%' );   
+               }
+
+                
+  if(isset($data['current_balance']) &&  $data['current_balance'] != null ){
+                   $query->where('current_balance' , 'like'  , '%' .$data['current_balance']. '%' );   
+               }
+
+                
+  if(isset($data['pending_balance']) &&  $data['pending_balance'] != null ){
+                   $query->where('pending_balance' , 'like'  , '%' .$data['pending_balance']. '%' );   
+               }
+
+                
+  if(isset($data['transferable_balance']) &&  $data['transferable_balance'] != null ){
+                   $query->where('transferable_balance' , 'like'  , '%' .$data['transferable_balance']. '%' );   
+               }
+
+                
+  if(isset($data['created_at']) &&  $data['created_at'] != null ){
+                   $query->where('created_at' , 'like'  , '%' .$data['created_at']. '%' );   
+               }
+
+                
+  if(isset($data['updated_at']) &&  $data['updated_at'] != null ){
+                   $query->where('updated_at' , 'like'  , '%' .$data['updated_at']. '%' );   
+               }
+
+                
+ 
+ })
+  ->paginate(50);
+
+
+ 
+  return view('QVM.wallets.wallets')
+
+->with('wallets',$wallets)
+;
+
+//searchfun

@@ -1,0 +1,120 @@
+{
+  "menu": [
+    {
+      "name": "Order dashboards",
+      "url": "/",
+      "icon": "home",
+      "slug": "dashboards"
+    },
+    {
+      "name": "POS statistics",
+      "url": "/pos_dashboard",
+      "icon": "pie-chart",
+      "slug": "pos_dashboard"
+    },
+    {
+      "navheader": "Companies",
+      "slug": ""
+    },
+    {
+      "url": "companies",
+      "name": "Companies",
+      "icon": "briefcase",
+      "slug": "companies"
+    },
+    {
+      "navheader": "Orders",
+      "slug": ""
+    },
+    {
+      "url": "orders",
+      "name": "Orders",
+      "icon": "shopping-cart",
+      "slug": "orders"
+    },
+    {
+      "url": "purchase_orders",
+      "name": "Purchase orders",
+      "icon": "file-text",
+      "slug": "purchase orders"
+    },
+    {
+      "navheader": "Offers",
+      "slug": ""
+    },
+    {
+      "url": "ads",
+      "name": "Ads",
+      "icon": "crosshair",
+      "slug": "ads"
+    },
+    {
+      "url": "offers",
+      "name": "Offers",
+      "icon": "gift",
+      "slug": "offers"
+    },
+    {
+      "navheader": "Transactions",
+      "slug": ""
+    },
+    {
+      "url": "pending_transactions",
+      "name": "Pending transactions",
+      "icon": "list",
+      "slug": "pending_transactions"
+    },
+    {
+      "navheader": "Wallet",
+      "slug": ""
+    },
+    {
+      "url": "merchants_wallets",
+      "name": "Merchants wallets",
+      "icon": "dollar-sign",
+      "slug": "merchants_wallets"
+    },
+    {
+      "url": "customer_wallets",
+      "name": "Customer wallets",
+      "icon": "credit-card",
+      "slug": "customer_wallets"
+    },
+    {
+      "navheader": "Settings",
+      "slug": ""
+    },
+    {
+      "url": "settings",
+      "name": "Settings",
+      "icon": "settings",
+      "slug": "Settings"
+    },
+    {
+      "navheader": "My Account",
+      "slug": ""
+    },
+    {
+      "url": "user/profile",
+      "name": "Profile",
+      "icon": "user",
+      "slug": "profile"
+    },
+    {
+      "url": "change_password",
+      "name": "Change Password",
+      "icon": "tool",
+      "slug": "change_password"
+    },
+    {
+      "navheader": "Logout",
+      "slug": ""
+    },
+    {
+      "url": "logout",
+      "name": "Logout",
+      "icon": "log-out",
+      "slug": "logout"
+    }
+  ]
+}

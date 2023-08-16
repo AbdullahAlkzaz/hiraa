@@ -1,0 +1,55 @@
+{
+    "menu": [
+        {
+            "name": "dashboard",
+            "url": "dashboard",
+            "icon": "home",
+            "slug": "dashboard"
+        },
+        {
+            "name": "المستخدمين",
+            "url": "users",
+            "icon": "users",
+            "slug": "users"
+        },
+        {
+            "name": "الشركات",
+            "url": "companies",
+            "icon": "briefcase",
+            "slug": "companies",
+            "role": "admin"
+            
+        },
+        {
+            "name": "المكاتب",
+            "url": "offices",
+            "icon": "briefcase",
+            "slug": "offices"
+        },
+        {
+            "url": "prices",
+            "name": "الأسعار",
+            "icon": "dollar-sign",
+            "slug": "prices",
+            "role": "admin"
+        },
+        {
+            "url": "shipments",
+            "name": "الشحنات",
+            "icon": "truck",
+            "slug": "shipments"
+        },
+        {
+            "url": "transactions",
+            "name": "المحفظة",
+            "icon": "dollar-sign",
+            "slug": "wallet"
+        },
+        {
+            "url": "logout",
+            "name": "Logout",
+            "icon": "log-out",
+            "slug": "logout"
+        }
+    ]
+}
