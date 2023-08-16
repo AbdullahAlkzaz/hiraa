@@ -77,13 +77,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-1">
-                            @if (Route::has('signUp'))
-                                <a href="{{ route('signUp') }}">
-                                    {{ __('تسجيل حساب جديد') }}
-                                </a>
-                            @endif
-                        </div>
                         <button type="submit" class="btn btn-primary w-100"
                             tabindex="4">{{ __('تسجيل الدخول') }}</button>
                     </form>
