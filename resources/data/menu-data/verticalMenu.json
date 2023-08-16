@@ -44,12 +44,7 @@
             "name": "المحفظة",
             "icon": "dollar-sign",
             "slug": "wallet"
-        },
-        {
-            "url": "logout",
-            "name": "Logout",
-            "icon": "log-out",
-            "slug": "logout"
         }
+        
     ]
 }

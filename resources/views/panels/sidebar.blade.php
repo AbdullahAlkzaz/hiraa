@@ -63,13 +63,21 @@
                         </li>
                     @endif
                 @endforeach
-                <li class="nav-item {{ $custom_classes }} active">
+                <li class="nav-item {{ $custom_classes }}" style="background: linear-gradient(-118deg, #28c76f, rgba(115, 103, 240, 0.7)) !important">
                     <a href="{{config("app.store_url")}}"
                         class="d-flex align-items-center" target="_blank">
                         <i data-feather="shopping-bag"></i>
                         <span class="menu-title text-truncate">المخزن</span>
                     </a>
                 </li>
+                <li class="nav-item {{ $custom_classes }}">
+                    <a href="{{url("logout")}}"
+                        class="d-flex align-items-center" >
+                        <i data-feather="log-out"></i>
+                        <span class="menu-title text-truncate">Logout</span>
+                    </a>
+                </li>
+                
             @endif
             {{-- Foreach menu item ends --}}
         </ul>

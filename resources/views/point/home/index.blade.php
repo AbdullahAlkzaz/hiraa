@@ -31,9 +31,9 @@
         <header>
             <div class="menuBar">
                 <nav>
-                    <button class="SUB">الإشتراك</button>
-                    <a href="#">تسجيل الدخول</a>
-                    <a href="#">تتبع الشحنة</a>
+                    <button class="SUB" onclick="window.location.href='{{ url('/login') }}';">الإشتراك</button>
+                    <a href="{{ url('/login') }}" target="_blank">تسجيل الدخول</a>
+                    <a href="{{ url('/login') }}" target="_blank">تتبع الشحنة</a>
                     <button id="menuClose"><span class="material-symbols-outlined">
                             close
                         </span></button>
@@ -45,7 +45,7 @@
             <button id="menuBtn"><span class="material-symbols-outlined">
                     menu
                 </span></button>
-            <a href="#" class="logo"><img src="{{asset("home/css/img/point12.png")}}"></a>
+            <a href="{{ url('/login') }}" target="_blank" class="logo"><img src="{{asset("home/css/img/point12.png")}}"></a>
         </header>
     
         <section class="main">
@@ -74,7 +74,7 @@
                     <span><i class="fa-solid fa-check"></i> اشتراك رمزي للمخازن</span><br>
                     <span><i class="fa-solid fa-check"></i> نطام خاص لادارة الوارد المادية</span><br>
                 </div>
-                <a class="btn btn-primary" href="{{ url('/login') }}">انضم الينا</a>
+                <a class="btn btn-primary" href="{{ url('/login') }}" target="_blank">انضم الينا</a>
             </div>
             <div>
                 <img src="{{ asset("home") }}/css/img/8325.jpg" style="width:20rem">
