@@ -38,8 +38,7 @@ class ShipmentRepository extends BaseRepository implements ShipmentRepositoryInt
             if(auth()->user()->type_id == Type::REPRESENTATIVE_TYPE){
                 $query->where("company_id", auth()->user()->company_id)
                 ->where("office_id", auth()->user()->office_id);
-            }
-            if(auth()->user()->hasRole("admin") || auth()->user()->type_id == Type::SELLER_TYPE){
+            }elseif(auth()->user()->type_id == Type::SELLER_TYPE){
                 $query->where("company_id", auth()->user()->id);
             }
         })
