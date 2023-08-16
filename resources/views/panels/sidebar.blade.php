@@ -21,8 +21,15 @@
             {{-- Foreach menu item starts --}}
             @if (isset($menuData[0]))
                 @foreach ($menuData[0]->menu as $menu)
-                    @if ((isset($menu->role) and !auth()->user()->hasRole($menu->role)) || (($menu->slug == "users" || $menu->slug == "offices") && (auth()->user()->type_id == \App\Models\Type::REPRESENTATIVE_TYPE || auth()->user()->type_id == \App\Models\Type::SELLER_TYPE )) || ($menu->slug == "offices" && auth()->user()->type_id == \App\Models\Type::OFFICE_TYPE) || ($menu->slug == "wallet" && !auth()->user()->wallet))
-                    @continue
+                    @if (
+                        (isset($menu->role) and
+                            !auth()->user()->hasRole($menu->role)) ||
+                            (($menu->slug == 'users' || $menu->slug == 'offices') &&
+                                (auth()->user()->type_id == \App\Models\Type::REPRESENTATIVE_TYPE ||
+                                    auth()->user()->type_id == \App\Models\Type::SELLER_TYPE)) ||
+                            ($menu->slug == 'offices' && auth()->user()->type_id == \App\Models\Type::OFFICE_TYPE) ||
+                            ($menu->slug == 'wallet' && !auth()->user()->wallet))
+                        @continue
                     @endif
                     @if (isset($menu->navheader))
                         <li class="navigation-header">
@@ -56,6 +63,13 @@
                         </li>
                     @endif
                 @endforeach
+                <li class="nav-item {{ $custom_classes }} active">
+                    <a href="{{config("app.store_url")}}"
+                        class="d-flex align-items-center" target="_blank">
+                        <i data-feather="shopping-bag"></i>
+                        <span class="menu-title text-truncate">المخزن</span>
+                    </a>
+                </li>
             @endif
             {{-- Foreach menu item ends --}}
         </ul>

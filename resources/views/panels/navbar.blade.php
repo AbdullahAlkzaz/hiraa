@@ -18,10 +18,6 @@
             class="header-navbar navbar navbar-expand-lg align-items-center {{ $configData['navbarClass'] }} navbar-light navbar-shadow {{ $configData['navbarColor'] }} {{ $configData['layoutWidth'] === 'boxed' && $configData['verticalMenuNavbarType'] === 'navbar-floating' ? 'container-xxl' : '' }}">
 @endif
 <div class="navbar-container d-flex content">
-
-    <a class="btn btn-primary" href="{{config("app.store_url")}}" style="right: 49%">
-        المخزن
-    </a>
     <!--div class="bookmark-wrapper d-flex align-items-center">
     <ul class="nav navbar-nav d-xl-none">
       <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon"
