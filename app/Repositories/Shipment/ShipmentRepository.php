@@ -42,6 +42,7 @@ class ShipmentRepository extends BaseRepository implements ShipmentRepositoryInt
                 $query->where("company_id", auth()->user()->id);
             }
         })
+        ->orderBy("id", "DESC")
         ->paginate(10);
         return $shipments;
     }

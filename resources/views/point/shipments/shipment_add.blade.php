@@ -48,7 +48,8 @@
                                     @if (auth()->user()->hasRole('admin'))
                                         <input type="hidden" value="admin" name="creator_type" />
                                         <input type="hidden" value="{{ auth()->user()->id }}" name="company_id" />
-                                    @elseif(auth()->user()->type_id == \App\Models\Type::OFFICE_TYPE || auth()->user()->type_id == \App\Models\Type::SELLER_TYPE)
+                                    @elseif(auth()->user()->type_id == \App\Models\Type::OFFICE_TYPE ||
+                                            auth()->user()->type_id == \App\Models\Type::SELLER_TYPE)
                                         <input type="hidden" value="regular" name="creator_type" />
                                     @endif
 
@@ -60,7 +61,7 @@
                                         <input type="hidden" value="{{ auth()->user()->id }}" name="office_id" />
                                         <input type="hidden" value="{{ auth()->user()->id }}" name="company_id" />
                                     @endif
-                                    
+
 
 
                                     <div class="form-body">
@@ -183,21 +184,24 @@
                                                         <input type="number" class="form-control form-control-merge"
                                                             value="{{ old('point_price', 0) }}" id="shipment-point_price"
                                                             name="point_price" placeholder="مصاريف بوينت"
-                                                            aria-describedby="point_price" tabindex="3" required readonly />
+                                                            aria-describedby="point_price" tabindex="3" required
+                                                            readonly />
                                                     </div>
                                                 </div>
                                             </div>
-                                            @role('admin')
+                                            @if (auth()->user()->hasRole('admin'))
                                                 <h1 class="text-center">بيانات الراسل</h1>
                                                 <br>
                                                 <div class="col-md-12" style="display:flex;">
                                                     <div class="mb-1 col-md-6" style="margin-left: 10px;">
-                                                        <label for="register-username" class="form-label">اسم الراسل</label>
+                                                        <label for="register-username" class="form-label">اسم
+                                                            الراسل</label>
                                                         <input type="text"
                                                             class="form-control @error('name') is-invalid @enderror"
-                                                            id="register-username" name="sender_name" placeholder="john doe"
-                                                            aria-describedby="register-username" tabindex="1" autofocus
-                                                            value="{{ old('sender_name') }}" required />
+                                                            id="register-username" name="sender_name"
+                                                            placeholder="john doe" aria-describedby="register-username"
+                                                            tabindex="1" autofocus value="{{ old('sender_name') }}"
+                                                            required />
                                                         @error('name')
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $message }}</strong>
@@ -235,7 +239,8 @@
                                                         @enderror
                                                     </div>
                                                     <div class="mb-1 col-md-6">
-                                                        <label for="register-phone" class="form-label"> الرقم القومي </label>
+                                                        <label for="register-phone" class="form-label"> الرقم القومي
+                                                        </label>
                                                         <input type="text"
                                                             class="form-control @error('phone') is-invalid @enderror"
                                                             id="register-sender_id" name="sender_id" placeholder=""
@@ -252,12 +257,13 @@
                                                     <div class="mb-1 col-md-6" style="margin-left: 10px;">
                                                         <label for="government" class="form-label">المحافظة</label>
                                                         <div class="input-group input-group-merge ">
-                                                            <select class="form-select select2" id="sender-government-select"
+                                                            <select class="form-select select2"
+                                                                id="sender-government-select"
                                                                 class="form-control text-center"
                                                                 data-placeholder="نوع المستخدم" name="sender_government"
                                                                 required>
-                                                                <option value="government" class="fs-4 text-center" selected
-                                                                    disabled>
+                                                                <option value="government" class="fs-4 text-center"
+                                                                    selected disabled>
                                                                     <span>إختر المحافظة</span>
                                                                 </option>
                                                                 @foreach ($governments as $one_gevernment)
@@ -275,12 +281,25 @@
                                                             <input type="text"
                                                                 class="form-control sender-area-selected form-control-merge"
                                                                 value="" id="area" name="sender_area"
-                                                                placeholder="المنطقة" aria-describedby="area" tabindex="3"
-                                                                required disabled />
+                                                                placeholder="المنطقة" aria-describedby="area"
+                                                                tabindex="3" required disabled />
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endrole
+                                            @else
+                                                <input type="hidden" name="sender_name"
+                                                    value="{{ auth()->user()->name }}" />
+                                                <input type="hidden" name="sender_phone"
+                                                    value="{{ auth()->user()->phone }}" />
+                                                <input type="hidden" name="sender_address"
+                                                    value="{{ auth()->user()->address_1 . ', ' . auth()->user()->address_2 }}" />
+                                                <input type="hidden" name="sender_id"
+                                                    value="{{ auth()->user()->id_number ?? "-" }}" />
+                                                <input type="hidden" name="sender_government"
+                                                    value="{{ auth()->user()->government }}" />
+                                                <input type="hidden" name="sender_area"
+                                                    value="{{ auth()->user()->area }}" />
+                                            @endif
                                             <h1 class="text-center">تفاصيل الشحنة</h1>
                                             <br>
                                             <div class="col-md-12" style="display:flex;">

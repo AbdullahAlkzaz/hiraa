@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Traits\HasPermissionsTrait;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -64,6 +65,15 @@ class User extends Authenticatable
     }
     public function wallet(){
         return $this->hasOne(Wallet::class, "user_id");
+    }
+
+    public function updateProfilePhoto($photo){
+        $path = Storage::disk('public')->put('profile_images', $photo);
+        $this->image = $path;
+    }
+    public function deleteProfilePhoto(){
+        $this->image = null;
+        $this->save();
     }
 
 }
