@@ -55,15 +55,22 @@
                                     <th>اسم المستلم</th>
                                     <th>هاتف المستلم</th>
                                     <th>عنوان المستلم</th>
+                                    <th>وصف الشحنة</th>
+                                    @if (auth()->user()->hasRole('admin') || auth()->user()->type_id == \App\Models\Type::REPRESENTATIVE_TYPE)
+                                        <th>حالة الشحنة</th>
+                                        <th>سبب الحالة</th>
+                                        <th>تاريخ الحالة</th>
+                                        <th>نوع الشحن</th>
+                                    @endif
                                     @if (auth()->user()->hasRole('admin') || auth()->user()->type_id != \App\Models\Type::REPRESENTATIVE_TYPE)
-                                    <th>{{ __('Action') }}</th>
+                                        <th>{{ __('Action') }}</th>
                                     @endif
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($shipments as $key => $shipment)
                                     <tr>
-                                        <td>{{ $shipment->id}}</td>
+                                        <td>{{ $shipment->id }}</td>
                                         <td>{{ $shipment->sender_name }}</td>
                                         <td>{{ $shipment->sender_phone }}</td>
                                         <td> {{ $shipment->sender_address . ', ' . $shipment->sender_government . ', ' . $shipment->sender_area }}
@@ -71,6 +78,32 @@
                                         <td>{{ $shipment->receiver_name }}</td>
                                         <td>{{ $shipment->receiver_phone }}</td>
                                         <td> {{ $shipment->receiver_address . ', ' . $shipment->receiver_government . ', ' . $shipment->receiver_area }}
+                                        </td>
+                                        <td> {{ $shipment->product_description }}</td>
+                                        {{-- <td> {{ $shipment->status }}</td> --}}
+                                        @if (auth()->user()->hasRole('admin') || auth()->user()->type_id == \App\Models\Type::REPRESENTATIVE_TYPE)
+                                            <td>
+                                                <div class="input-group input-group-merge ">
+                                                    <select class="form-control text-center status-select"
+                                                        data-shipment_id="{{ $shipment->id }}" name="sender_government"
+                                                        style="width: 140px;">
+                                                        @foreach ($statuses as $status)
+                                                            <option value="{{ $status }}"
+                                                                @selected($shipment->status == $status) class="fs-4 text-center">
+                                                                <span>{{ $status }}</span>
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td> {{ $shipment->status_reason }}</td>
+                                            <td>
+                                                <div><span
+                                                        style="display:block !important; width: 140px;">{{ $shipment->status_date }}</span>
+                                                </div>
+                                            </td>
+                                        @endif
+                                        <td> {{ $shipment->is_receive == 1 ? 'إستلام' : 'تسليم' }}
                                         </td>
                                         @if (auth()->user()->hasRole('admin') || auth()->user()->type_id != \App\Models\Type::REPRESENTATIVE_TYPE)
                                             <td>
@@ -125,6 +158,83 @@
     <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script> <!-- END: Page Vendor JS-->
     <!-- END: Page Vendor JS-->
     <script>
+        $(".status-select").change(function() {
+            var status = $(this).val();
+
+            var shipmentId = $(this).attr("data-shipment_id");
+            var url = 'shipments/change/shipment/status';
+            url = "{{ url('') }}" + "/" + url
+            Swal.fire({
+                title: "{{ __('هل أنت متأكد') }}",
+                text: "{{ __('ستقوم بتغيير الحالة للشحنة!') }}",
+                type: 'warning',
+                input: 'textarea',
+                inputPlaceholder: "لو كان هناك سببا اكتبة من فضلك",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: "{{ __('نعم متأكد!') }}",
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                cancelButtonText: "{{ __('إلغاء') }}",
+                buttonsStyling: false,
+            }).then(function(result) {
+                if (result.value || result.value == "") {
+                    $.ajax({
+                        type: 'post',
+                        url: url,
+                        data: {
+                            shipment_id: shipmentId,
+                            status: status,
+                            reason: result.value,
+                            _token: "{{ csrf_token() }}",
+                        },
+                        dataType: 'html',
+                        success: function(data) {
+                            if (data == 0) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    type: "fail",
+                                    title: 'لا يمكن تغيير هذه الحالة الآن',
+                                    text: 'عذرا لا يمكنك تغيير الحالة الان',
+                                    confirmButtonClass: 'btn btn-success',
+                                });
+                                return 0;
+                            } else {
+                                Swal.fire({
+                                    type: "success",
+                                    title: 'تم تعديل الحالة!',
+                                    text: 'تم تعديل الحالة كما تريد',
+                                    confirmButtonClass: 'btn btn-success',
+                                })
+                                location.reload();
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'لا يمكن تغيير هذه الحالة الآن',
+                                text: JSON.parse(err.responseText).message,
+                                customClass: {
+                                    confirmButton: 'btn btn-success'
+                                }
+                            })
+                        }
+                    });
+
+
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "{{ __('تم الإلغاء') }}",
+                        text: "{{ __('لن يتم تعديل الحالة') }}",
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-success',
+                    })
+                }
+            })
+
+        });
         $(document).ready(function() {
             $('.delete-this').on('click', function() {
                 var id = ($(this).attr("data-userId"));

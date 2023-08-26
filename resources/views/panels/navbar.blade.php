@@ -230,7 +230,7 @@
                 </div>
                 <span class="avatar">
                     <img class="round"
-                        src="{{ Auth::user() ? Auth::user()->profile_photo_url ?? asset('images/portrait/small/point-logo.png') : asset('images/portrait/small/point-logo.png') }}"
+                        src="{{ Auth::user() ? asset('storage/'.Auth::user()->image) ?? asset('images/portrait/small/point-logo.png') : asset('images/portrait/small/point-logo.png') }}"
                         alt="avatar" height="40" width="40">
                     <span class="avatar-status-online"></span>
                 </span>

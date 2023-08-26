@@ -77,7 +77,10 @@ Route::middleware([Authentication::class])->group(function () {
         Route::get("create/", [ShipmentController::class, "create"])->name("shipments.create");
         Route::post("store/", [ShipmentController::class, "store"])->name("shipments.store");
         Route::get("show/{id}", [ShipmentController::class, "show"])->name("shipments.show");
+        Route::get("/get/clinet/data/{phone}", [ShipmentController::class, "getClientByPhone"])->name("shipments.getClientByPhone");
         Route::put("update", [ShipmentController::class, "update"])->name('shipments.update');
+        Route::post("change/shipment/status", [ShipmentController::class, "changeStatus"])->name('shipments.updateStatus');
+        
     });
     Route::group(["prefix" => "prices"], function () {
         Route::get("/", [PriceController::class, "index"])->name("prices.index");

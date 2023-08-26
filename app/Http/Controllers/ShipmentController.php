@@ -6,6 +6,7 @@ use App\Http\Requests\CreateShipmentRequest;
 use App\Http\Requests\UpdateShipmentRequest;
 use App\Models\Notification;
 use App\Models\Price;
+use App\Models\Shipment;
 use App\Models\Transaction;
 use App\Models\Type;
 use App\Models\User;
@@ -41,6 +42,7 @@ class ShipmentController extends Controller
         $shipments = $this->repository->getShipments($request->all());
         return view("point.shipments.shipments")->with([
             'shipments' => $shipments,
+            'statuses' => Shipment::STATUSES,
         ]);
     }
     public function create()
@@ -64,71 +66,21 @@ class ShipmentController extends Controller
             DB::beginTransaction();
             $data = $request->validated();
             unset($data['creator_type']);
+            $admin_user = $this->userModel->where("email", User::ADMIN_EMAIL)->first();
+            if (auth()->user()->id == $admin_user->id) {
+                $data['status'] = "نقطة أ";
+            } else {
+                $data['status'] = "الإستلام";
+            }
             $shipment = $this->repository->create($data);
             $client = $this->createSellerIfNotExists($data);
-            if ($client && $client->wallet) {
-                $client_wallet = $client->wallet;
-                if ($client_wallet) {
-                    $transaction_data = [
-                        "amount" => $shipment->client_price,
-                        "type" => "credit",
-                        "operation_id" => $shipment->id,
-                        "operation_type" => "شحنة",
-                        "wallet_id" => $client_wallet->id,
-                        "description" => "المبلغ المرسل مع الشحنة",
-                    ];
-                    $transaction = $this->transactionModel->setTransaction($transaction_data);
-
-                }
-            }
-            $admin_user = $this->userModel->where("email", User::ADMIN_EMAIL)->first();
-            if ($admin_user) {
-                $admin_wallet = $admin_user->wallet;
-                if ($admin_wallet) {
-                    $transaction_data = [
-                        "amount" => $shipment->point_price,
-                        "type" => "credit",
-                        "operation_id" => $shipment->id,
-                        "operation_type" => "شحنة",
-                        "wallet_id" => $admin_wallet->id,
-                        "description" => "ثمن الشحن مستحق لبوينت",
-                    ];
-                    $transaction = $this->transactionModel->setTransaction($transaction_data);
-
-                }
-            }
-            $user_wallet = auth()->user()->wallet;
-            if ($user_wallet) {
-                $transaction_data = [
-                    "amount" => $shipment->client_price,
-                    "type" => "debit",
-                    "operation_id" => $shipment->id,
-                    "operation_type" => "شحنة",
-                    "wallet_id" => $user_wallet->id,
-                    "description" => "المبلغ المرسل للعميل",
-                ];
-                $transaction = $this->transactionModel->setTransaction($transaction_data);
-            }
-            $client_notification_data = [
-                "user_id" => $client->id,
-                "body" => " تم ارسال المبلغ الخاص بالشحنة من العميل". auth()->user()->name  ,
-            ];
-            $this->setNotification($client_notification_data);
-            $admin_notification_data = [
-                "user_id" => $admin_user->id,
-                "url" => url("transactions"),
-                "body" => "تم استلام التحويل الخاص بثمن الشحن من الشحنة رقم" . $shipment->id 
-            ];
-            $this->setNotification($admin_notification_data);
-            $shipment_notificatgion = [
-                "user_id" => $admin_user->id,
-                "url" => url("shipments"),
-                "body" => "تم إنشاء شحنة جديدةقم بفحصها من فضلك"
-            ];
-            $this->setNotification($shipment_notificatgion);
             DB::commit();
             session()->flash('message', __("تم إنشاء الشحنة بنجاح"));
-            return back();
+            if ($request->confirm_flag == 1) {
+                return back();
+            } else {
+                return redirect(route("shipments.index"));
+            }
         } catch (Exception $exception) {
             DB::rollBack();
             dd($exception->getMessage());
@@ -217,7 +169,7 @@ class ShipmentController extends Controller
             "phone" => $data['receiver_phone'],
             "type_id" => Type::SELLER_TYPE,
             "is_seller" => 0,
-            "id_number" => $data['receiver_id'],
+            // "id_number" => $data['receiver_id'],
             "address_1" => $data['receiver_address'],
             "gender" => "0",
             "government" => $data['receiver_government'],
@@ -233,8 +185,100 @@ class ShipmentController extends Controller
         return $client;
     }
 
-    public function setNotification($data){
+    public function setNotification($data)
+    {
         $notification = $this->notificationModel->create($data);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $shipment = $this->repository->where("id", $request->shipment_id)->first();
+        if (!in_array($request->status, Shipment::STATUSES)) {
+            return 0;
+        }
+        $data = [
+            "status" => $request->status,
+            "status_reason" => $request->reason,
+            "status_date" => now()->format("Y-m-d")
+        ];
+        $update = $shipment->update($data);
+        $shipment->refresh();
+        $transaction = $this->transactionModel->where("operation_id", $shipment->id)->first();
+        if ($request->status == Shipment::COMPLETED && !$transaction) {
+            $admin_user = $this->userModel->where("email", User::ADMIN_EMAIL)->first();
+            $client = $this->userModel->where("phone", $shipment->receiver_phone)->first();
+            if ($client && $client->wallet) {
+                $client_wallet = $client->wallet;
+                if ($client_wallet) {
+                    $transaction_data = [
+                        "amount" => $shipment->client_price,
+                        "type" => "credit",
+                        "operation_id" => $shipment->id,
+                        "operation_type" => "شحنة",
+                        "wallet_id" => $client_wallet->id,
+                        "description" => "المبلغ المرسل مع الشحنة",
+                    ];
+                    $transaction = $this->transactionModel->setTransaction($transaction_data);
+
+                }
+            }
+            if ($admin_user) {
+                $admin_wallet = $admin_user->wallet;
+                if ($admin_wallet) {
+                    $transaction_data = [
+                        "amount" => $shipment->point_price,
+                        "type" => "credit",
+                        "operation_id" => $shipment->id,
+                        "operation_type" => "شحنة",
+                        "wallet_id" => $admin_wallet->id,
+                        "description" => "ثمن الشحن مستحق لبوينت",
+                    ];
+                    $transaction = $this->transactionModel->setTransaction($transaction_data);
+
+                }
+            }
+            $user_wallet = auth()->user()->wallet;
+            if ($user_wallet) {
+                $transaction_data = [
+                    "amount" => $shipment->client_price,
+                    "type" => "debit",
+                    "operation_id" => $shipment->id,
+                    "operation_type" => "شحنة",
+                    "wallet_id" => $user_wallet->id,
+                    "description" => "المبلغ المرسل للعميل",
+                ];
+                $transaction = $this->transactionModel->setTransaction($transaction_data);
+            }
+            $client_notification_data = [
+                "user_id" => $client->id,
+                "body" => " تم ارسال المبلغ الخاص بالشحنة من العميل" . auth()->user()->name,
+            ];
+            $this->setNotification($client_notification_data);
+            $admin_notification_data = [
+                "user_id" => $admin_user->id,
+                "url" => url("transactions"),
+                "body" => "تم استلام التحويل الخاص بثمن الشحن من الشحنة رقم" . $shipment->id
+            ];
+            $this->setNotification($admin_notification_data);
+            $shipment_notificatgion = [
+                "user_id" => $admin_user->id,
+                "url" => url("shipments"),
+                "body" => "تم إنشاء شحنة جديدةقم بفحصها من فضلك"
+            ];
+            $this->setNotification($shipment_notificatgion);
+        }
+        return $update;
+
+    }
+    public function getClientByPhone($phone){
+        $client = $this->userModel->where("phone", $phone)->first();
+        if($client){
+            return [
+                "name" => $client->name,
+                "address" => $client->address_1 . " . " . $client->address_2,
+            ];
+        }
+        return 0;
     }
 
 

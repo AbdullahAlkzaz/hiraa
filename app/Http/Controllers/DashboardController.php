@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SettingsRequest;
+use App\Models\Shipment;
+use App\Models\Type;
 use App\Services\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +14,7 @@ use App\Repositories\Inventory\InventoryRepositoryInterface;
 use App\Repositories\Safe\SafeRepositoryInterface;
 use App\Models\Settings;
 use App\Repositories\Product\ProductRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -24,6 +27,9 @@ class DashboardController extends Controller
     }
     public function show(){
         $sales = 0;
+        $count_seller = DB::table("users")->where("type_id", Type::SELLER_TYPE)->count();
+        $count_completed_shipments = DB::table("shipments")->where("status", Shipment::COMPLETED)->count();
+        $count_shipments_revenue = DB::table("shipments")->where("status", Shipment::COMPLETED)->sum("point_price");
         $count_customers = 0;
         $count_products = 0;
         $revenue = 0;
@@ -38,7 +44,7 @@ class DashboardController extends Controller
         $count_orders = 0;
         $inprogress_orders = Helpers::get_percentage_between($count_orders, $count_orders_completed);
         $companies = [];
-        return view("dashboard", compact('transactions_by_descriptions', 'wallet_withdraw', 'wallet_deposit', 'top_products', 'inprogress_orders', 'count_orders_in_progress', 
+        return view("dashboard", compact('count_seller', 'count_completed_shipments', 'count_shipments_revenue','transactions_by_descriptions', 'wallet_withdraw', 'wallet_deposit', 'top_products', 'inprogress_orders', 'count_orders_in_progress', 
         'count_orders_completed', 'count_customers', 'count_products', 'sales', 'revenue', 'count_orders', 'companies'));
     }
     public function editSettings(){

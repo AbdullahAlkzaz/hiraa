@@ -93,7 +93,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12" style="display:flex;">
-                                                <div class="mb-1 col-md-6" style="margin-left: 10px;">
+                                                <div class="mb-1 col-md-12" style="margin-left: 10px;">
                                                     <label for="register-receiver_address" class="form-label"> العنوان
                                                     </label>
                                                     <input type="text"
@@ -108,7 +108,7 @@
                                                         </span>
                                                     @enderror
                                                 </div>
-                                                <div class="mb-1 col-md-6">
+                                                {{-- <div class="mb-1 col-md-6">
                                                     <label for="register-phone" class="form-label"> الرقم القومي </label>
                                                     <input type="text"
                                                         class="form-control @error('phone') is-invalid @enderror"
@@ -120,7 +120,7 @@
                                                             <strong>{{ $message }}</strong>
                                                         </span>
                                                     @enderror
-                                                </div>
+                                                </div> --}}
                                             </div>
                                             <div class="col-md-12" style="display:flex;">
                                                 <div class="mb-1 col-md-6" style="margin-left: 10px;">
@@ -180,7 +180,7 @@
                                                         <input type="number" class="form-control form-control-merge"
                                                             value="{{ old('point_price', $shipment->point_price) }}" id="shipment-point_price"
                                                             name="point_price" placeholder="مصاريف بوينت"
-                                                            aria-describedby="point_price" tabindex="3" required readonly />
+                                                            aria-describedby="point_price" tabindex="3" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -301,6 +301,41 @@
                                                         aria-describedby="register-phone" tabindex="2"
                                                         value="{{ old('product_count', $shipment->product_count) }}" required />
                                                     @error('product_count')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" style="display:flex;">
+                                                <div class="mb-1 col-md-6" style="margin-left: 10px;">
+                                                    <label for="register-product_description" class="form-label">
+                                                        نوع الشحنة
+                                                    </label>
+                                                    <select class="form-select select2" id="is_receive-select"
+                                                        class="form-control text-center" data-placeholder="نوع المستخدم"
+                                                        name="is_receive" required>
+                                                        <option value="1" class="fs-4 text-center" @selected($shipment->is_receive == 1)>
+                                                            <span>إستلام</span>
+                                                        </option>
+                                                        <option value="0" class="fs-4 text-center" @selected($shipment->is_receive == 0)>
+                                                            <span>تسليم</span>
+                                                        </option>
+                                                    </select>
+                                                    @error('is_receive')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="mb-1 col-md-6">
+                                                    <label for="coupon_code" class="form-label"> كود الخصم</label>
+                                                    <input type="number"
+                                                        class="form-control @error('coupon_code') is-invalid @enderror"
+                                                        id="coupon_code" name="coupon_code" placeholder=""
+                                                        aria-describedby="coupon_code" tabindex="2"
+                                                        value="{{ old('coupon_code', $shipment->coupon_code) }}" required />
+                                                    @error('coupon_code')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                         </span>

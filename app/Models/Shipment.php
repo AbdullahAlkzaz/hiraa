@@ -10,5 +10,17 @@ class Shipment extends Model
     use HasFactory;
     protected $table = "shipments";
     protected $guarded = [];
+
+    const COMPLETED = "تم التسليم";
+    const STATUSES = [
+        "الإستلام",
+        "نقطة أ",
+        "نقطة ب",
+        "خرجة للتسليم",
+        "جاري التسليم",
+        "مؤجل",
+        "ملغي",
+        "تم التسليم",
+    ];
     
 }

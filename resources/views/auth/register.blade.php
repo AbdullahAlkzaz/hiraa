@@ -188,22 +188,20 @@
                                 <label for="government" class="form-label">المحافظة</label>
                                 <div class="input-group input-group-merge ">
                                     <select class="form-select select2" id="government-select"
-                                        class="form-control text-center"
-                                        data-placeholder="نوع المستخدم" name="government"
-                                        required>
+                                        class="form-control text-center" data-placeholder="نوع المستخدم"
+                                        name="government" required>
                                         <option value="government" class="fs-4 text-center" selected>
                                             <span>إختر المحافظة</span>
                                         </option>
                                         @foreach ($governments as $one_gevernment)
-                                            <option value="{{ $one_gevernment }}"
-                                                class="fs-4 text-center">
+                                            <option value="{{ $one_gevernment }}" class="fs-4 text-center">
                                                 <span>{{ $one_gevernment }}</span>
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div class="mb-1 col-md-6">
                                 <label for="city" class="form-label">المدينة</label>
                                 <div class="input-group input-group-merge ">
@@ -217,11 +215,9 @@
                             <div class="mb-1 col-md-6 area-select">
                                 <label for="area" class="form-label">المنطقة</label>
                                 <div class="input-group input-group-merge ">
-                                    <input type="text"
-                                        class="form-control area-selected form-control-merge"
-                                        value="" id="area" name="area"
-                                        placeholder="المنطقة" aria-describedby="area" tabindex="3"
-                                        required readonly />
+                                    <input type="text" class="form-control area-selected form-control-merge"
+                                        value="" id="area" name="area" placeholder="المنطقة"
+                                        aria-describedby="area" tabindex="3" required readonly />
                                 </div>
                             </div>
                             <div class="mb-1 col-md-6">
@@ -247,9 +243,9 @@
                                             <span>إختر الشركة</span>
                                         </option>
                                         @foreach ($companies as $company)
-                                                <option value="{{ $company->id }}" class="fs-4 text-center">
-                                                    <span>{{ $company->name }}</span>
-                                                </option>
+                                            <option value="{{ $company->id }}" class="fs-4 text-center">
+                                                <span>{{ $company->name }}</span>
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -268,100 +264,104 @@
                         </div>
                         <div class="seller hidden">
                             <br>
-                            <h1 class="text-center">معلومات المتحر </h1>
+                            <center><input type="checkbox" value="1" name="seller_check" id="seller-check"> لديك متجر؟ </center>
                             <br>
-                            <div class="col-md-12" style="display:flex;">
-                                <div class="mb-1 col-md-6" style="margin-left: 10px;">
-                                    <label for="shop_name" class="form-label">اسم المتجر</label>
-                                    <div class="input-group input-group-merge ">
-                                        <input type="text" class="form-control form-control-merge"
-                                            value="{{ old('shop_name') }}" id="shop_name" name="shop_name"
-                                            placeholder="اسم المتجر" aria-describedby="shop_name" tabindex="3"
-                                            required />
+                            <div class="is_seller hidden">
+                                <h1 class="text-center">معلومات المتحر </h1>
+                                <br>
+                                <div class="col-md-12" style="display:flex;">
+                                    <div class="mb-1 col-md-6" style="margin-left: 10px;">
+                                        <label for="shop_name" class="form-label">اسم المتجر</label>
+                                        <div class="input-group input-group-merge ">
+                                            <input type="text" class="form-control form-control-merge"
+                                                value="{{ old('shop_name') }}" id="shop_name" name="shop_name"
+                                                placeholder="اسم المتجر" aria-describedby="shop_name" tabindex="3"
+                                                required />
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 col-md-6">
+                                        <label for="product_category" class="form-label">نوع المنتج</label>
+                                        <div class="input-group input-group-merge ">
+                                            <input type="text" class="form-control form-control-merge"
+                                                value="{{ old('product_category') }}" id="product_category"
+                                                name="product_category" placeholder="نوع المنتج"
+                                                aria-describedby="product_category" tabindex="3" required />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="mb-1 col-md-6">
-                                    <label for="product_category" class="form-label">نوع المنتج</label>
-                                    <div class="input-group input-group-merge ">
-                                        <input type="text" class="form-control form-control-merge"
-                                            value="{{ old('product_category') }}" id="product_category"
-                                            name="product_category" placeholder="نوع المنتج"
-                                            aria-describedby="product_category" tabindex="3" required />
+                                <div class="col-md-12" style="display:flex;">
+                                    <div class="mb-1 col-md-6" style="margin-left: 10px;">
+                                        <label for="shop_address" class="form-label">عنوان المتجر</label>
+                                        <div class="input-group input-group-merge ">
+                                            <input type="text" class="form-control form-control-merge"
+                                                value="{{ old('shop_address') }}" id="shop_address" name="shop_address"
+                                                placeholder="عنوان المتجر" aria-describedby="shop_address" tabindex="3"
+                                                required />
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 col-md-6">
+                                        <label for="product_category" class="form-label">شعار المتجر</label>
+                                        <div class="input-group input-group-merge ">
+                                            <input type="file" class="form-control form-control-merge"
+                                                value="{{ old('shop_logo') }}" id="shop_logo" name="shop_logo"
+                                                placeholder="شعار المتجر" aria-describedby="shop_logo" tabindex="3"
+                                                required />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12" style="display:flex;">
-                                <div class="mb-1 col-md-6" style="margin-left: 10px;">
-                                    <label for="shop_address" class="form-label">عنوان المتجر</label>
-                                    <div class="input-group input-group-merge ">
-                                        <input type="text" class="form-control form-control-merge"
-                                            value="{{ old('shop_address') }}" id="shop_address" name="shop_address"
-                                            placeholder="عنوان المتجر" aria-describedby="shop_address" tabindex="3"
-                                            required />
+                                <br>
+                                <h1 class="text-center">مكان النشاط</h1>
+                                <br>
+                                <div class="col-md-12" style="display:flex;">
+                                    <div class="mb-1 col-md-4" style="margin-left: 10px;">
+                                        <div class="form-check form-check-inline mp-1">
+                                            <input type="radio" value="0" class="form-check-input"
+                                                name="activity_type" required>
+                                            <label class="form-check-label" for="collapsible-payment-cash">أونلاين</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 col-md-4" margin-left: 10px;>
+                                        <div class="form-check form-check-inline ">
+                                            <input type="radio" value="1" class="form-check-input"
+                                                name="activity_type">
+                                            <label class="form-check-label" for="collapsible-payment-cash">محل </label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 col-md-4">
+                                        <div class="form-check form-check-inline ">
+                                            <input type="radio" value="2" class="form-check-input"
+                                                name="activity_type">
+                                            <label class="form-check-label" for="collapsible-payment-cash">محل &
+                                                أونلاين</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="mb-1 col-md-6">
-                                    <label for="product_category" class="form-label">شعار المتجر</label>
-                                    <div class="input-group input-group-merge ">
-                                        <input type="file" class="form-control form-control-merge"
-                                            value="{{ old('shop_logo') }}" id="shop_logo" name="shop_logo"
-                                            placeholder="شعار المتجر" aria-describedby="shop_logo" tabindex="3"
-                                            required />
+                                <br>
+                                <h1 class="text-center">هل المنتج قابل للكسر؟</h1>
+                                <br>
+                                <div class="col-md-12" style="display:flex;">
+                                    <div class="mb-1 col-md-4" style="margin-left: 10px;">
+                                        <div class="form-check form-check-inline mp-1">
+                                            <input type="radio" value="0" class="form-check-input"
+                                                name="breakable_product" required>
+                                            <label class="form-check-label" for="collapsible-payment-cash">غير قابل
+                                                للكسر</label>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <br>
-                            <h1 class="text-center">مكان النشاط</h1>
-                            <br>
-                            <div class="col-md-12" style="display:flex;">
-                                <div class="mb-1 col-md-4" style="margin-left: 10px;">
-                                    <div class="form-check form-check-inline mp-1">
-                                        <input type="radio" value="0" class="form-check-input"
-                                            name="activity_type" required>
-                                        <label class="form-check-label" for="collapsible-payment-cash">أونلاين</label>
+                                    <div class="mb-1 col-md-4" margin-left: 10px;>
+                                        <div class="form-check form-check-inline ">
+                                            <input type="radio" value="1" class="form-check-input"
+                                                name="breakable_product">
+                                            <label class="form-check-label" for="collapsible-payment-cash">نعم قابل
+                                                للكسر</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="mb-1 col-md-4" margin-left: 10px;>
-                                    <div class="form-check form-check-inline ">
-                                        <input type="radio" value="1" class="form-check-input"
-                                            name="activity_type">
-                                        <label class="form-check-label" for="collapsible-payment-cash">محل </label>
-                                    </div>
-                                </div>
-                                <div class="mb-1 col-md-4">
-                                    <div class="form-check form-check-inline ">
-                                        <input type="radio" value="2" class="form-check-input"
-                                            name="activity_type">
-                                        <label class="form-check-label" for="collapsible-payment-cash">محل &
-                                            أونلاين</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <h1 class="text-center">هل المنتج قابل للكسر؟</h1>
-                            <br>
-                            <div class="col-md-12" style="display:flex;">
-                                <div class="mb-1 col-md-4" style="margin-left: 10px;">
-                                    <div class="form-check form-check-inline mp-1">
-                                        <input type="radio" value="0" class="form-check-input"
-                                            name="breakable_product" required>
-                                        <label class="form-check-label" for="collapsible-payment-cash">غير قابل
-                                            للكسر</label>
-                                    </div>
-                                </div>
-                                <div class="mb-1 col-md-4" margin-left: 10px;>
-                                    <div class="form-check form-check-inline ">
-                                        <input type="radio" value="1" class="form-check-input"
-                                            name="breakable_product">
-                                        <label class="form-check-label" for="collapsible-payment-cash">نعم قابل
-                                            للكسر</label>
-                                    </div>
-                                </div>
-                                <div class="mb-1 col-md-4">
-                                    <div class="form-check form-check-inline ">
-                                        <input type="radio" value="2" class="form-check-input"
-                                            name="breakable_product">
-                                        <label class="form-check-label" for="collapsible-payment-cash">مختلط</label>
+                                    <div class="mb-1 col-md-4">
+                                        <div class="form-check form-check-inline ">
+                                            <input type="radio" value="2" class="form-check-input"
+                                                name="breakable_product">
+                                            <label class="form-check-label" for="collapsible-payment-cash">مختلط</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -393,6 +393,13 @@
 
     {{-- show shop details inputs if the user is seller --}}
     <script>
+        $("#seller-check").on("change", function(){
+            if($(".is_seller").hasClass("hidden")){
+                $(".is_seller").removeClass("hidden");
+            }else{
+                $(".is_seller").addClass("hidden");
+            }
+        });
         $("#government-select").on("change", function() {
             let government = $(this).val();
 
@@ -426,17 +433,17 @@
         });
         $("#company-id").on("change", function() {
             let company_id = $(this).val();
-            
-            var url = "{{URL::to('/')}}" + '/company/offices' +"/"+ parseInt(company_id);
+
+            var url = "{{ URL::to('/') }}" + '/company/offices' + "/" + parseInt(company_id);
             console.log(url);
             $.ajax({
                 type: 'get',
                 dataType: 'html',
                 url: url,
-                success: function (data) {
+                success: function(data) {
                     $(".office-details").html(data);
                 },
-                error: function (err){
+                error: function(err) {
                     alert(1);
                     console.log(err);
                 }

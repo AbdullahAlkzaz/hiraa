@@ -41,7 +41,7 @@
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <form class="form-horizontal" role="form" method="POST"
+                                <form class="form-horizontal" role="form" id="shipment-form" method="POST"
                                     action="{{ route('shipments.store') }}" novalidate>
                                     {!! csrf_field() !!}
                                     <input type="hidden" value="{{ auth()->user()->id }}" name="user_id" />
@@ -69,11 +69,24 @@
                                             <h1 class="text-center">بيانات المستلم</h1>
                                             <br>
                                             <div class="col-md-12" style="display:flex;">
+                                                <div class="mb-1 col-md-6">
+                                                    <label for="receiver-phone" class="form-label"> رقم الهاتف</label>
+                                                    <input type="text"
+                                                        class="form-control @error('phone') is-invalid @enderror"
+                                                        id="receiver-phone" name="receiver_phone" placeholder=""
+                                                        aria-describedby="receiver-phone" tabindex="2"
+                                                        value="{{ old('receiver_phone') }}" required />
+                                                    @error('phone')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
                                                 <div class="mb-1 col-md-6" style="margin-left: 10px;">
                                                     <label for="register-username" class="form-label">اسم المستلم</label>
                                                     <input type="text"
                                                         class="form-control @error('name') is-invalid @enderror"
-                                                        id="register-username" name="receiver_name" placeholder="john doe"
+                                                        id="receiver-name" name="receiver_name" placeholder="john doe"
                                                         aria-describedby="register-username" tabindex="1" autofocus
                                                         value="{{ old('receiver_name') }}" required />
                                                     @error('name')
@@ -82,27 +95,14 @@
                                                         </span>
                                                     @enderror
                                                 </div>
-                                                <div class="mb-1 col-md-6">
-                                                    <label for="register-phone" class="form-label"> رقم الهاتف</label>
-                                                    <input type="text"
-                                                        class="form-control @error('phone') is-invalid @enderror"
-                                                        id="register-phone" name="receiver_phone" placeholder=""
-                                                        aria-describedby="register-phone" tabindex="2"
-                                                        value="{{ old('receiver_phone') }}" required />
-                                                    @error('phone')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
                                             </div>
                                             <div class="col-md-12" style="display:flex;">
-                                                <div class="mb-1 col-md-6" style="margin-left: 10px;">
+                                                <div class="mb-1 col-md-12" style="margin-left: 10px;">
                                                     <label for="register-receiver_address" class="form-label"> العنوان
                                                     </label>
                                                     <input type="text"
                                                         class="form-control @error('name') is-invalid @enderror"
-                                                        id="register-username" name="receiver_address"
+                                                        id="receiver-address" name="receiver_address"
                                                         placeholder="john doe" aria-describedby="register-username"
                                                         tabindex="1" autofocus value="{{ old('receiver_address') }}"
                                                         required />
@@ -112,7 +112,7 @@
                                                         </span>
                                                     @enderror
                                                 </div>
-                                                <div class="mb-1 col-md-6">
+                                                {{-- <div class="mb-1 col-md-6">
                                                     <label for="register-phone" class="form-label"> الرقم القومي </label>
                                                     <input type="text"
                                                         class="form-control @error('phone') is-invalid @enderror"
@@ -124,7 +124,7 @@
                                                             <strong>{{ $message }}</strong>
                                                         </span>
                                                     @enderror
-                                                </div>
+                                                </div> --}}
                                             </div>
                                             <div class="col-md-12" style="display:flex;">
                                                 <div class="mb-1 col-md-6" style="margin-left: 10px;">
@@ -184,8 +184,7 @@
                                                         <input type="number" class="form-control form-control-merge"
                                                             value="{{ old('point_price', 0) }}" id="shipment-point_price"
                                                             name="point_price" placeholder="مصاريف بوينت"
-                                                            aria-describedby="point_price" tabindex="3" required
-                                                            readonly />
+                                                            aria-describedby="point_price" tabindex="3" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,29 +192,29 @@
                                                 <h1 class="text-center">بيانات الراسل</h1>
                                                 <br>
                                                 <div class="col-md-12" style="display:flex;">
-                                                    <div class="mb-1 col-md-6" style="margin-left: 10px;">
-                                                        <label for="register-username" class="form-label">اسم
-                                                            الراسل</label>
+                                                    <div class="mb-1 col-md-6">
+                                                        <label for="register-phone" class="form-label"> رقم الهاتف</label>
                                                         <input type="text"
-                                                            class="form-control @error('name') is-invalid @enderror"
-                                                            id="register-username" name="sender_name"
-                                                            placeholder="john doe" aria-describedby="register-username"
-                                                            tabindex="1" autofocus value="{{ old('sender_name') }}"
-                                                            required />
-                                                        @error('name')
+                                                            class="form-control @error('phone') is-invalid @enderror"
+                                                            id="sender-phone" name="sender_phone" placeholder=""
+                                                            aria-describedby="register-phone" tabindex="2"
+                                                            value="{{ old('sender_phone') }}" required />
+                                                        @error('phone')
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
                                                         @enderror
                                                     </div>
-                                                    <div class="mb-1 col-md-6">
-                                                        <label for="register-phone" class="form-label"> رقم الهاتف</label>
+                                                    <div class="mb-1 col-md-6" style="margin-left: 10px;">
+                                                        <label for="register-username" class="form-label">اسم
+                                                            الراسل</label>
                                                         <input type="text"
-                                                            class="form-control @error('phone') is-invalid @enderror"
-                                                            id="register-phone" name="sender_phone" placeholder=""
-                                                            aria-describedby="register-phone" tabindex="2"
-                                                            value="{{ old('sender_phone') }}" required />
-                                                        @error('phone')
+                                                            class="form-control @error('name') is-invalid @enderror"
+                                                            id="sender-name" name="sender_name"
+                                                            placeholder="john doe" aria-describedby="register-username"
+                                                            tabindex="1" autofocus value="{{ old('sender_name') }}"
+                                                            required />
+                                                        @error('name')
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -228,7 +227,7 @@
                                                         </label>
                                                         <input type="text"
                                                             class="form-control @error('name') is-invalid @enderror"
-                                                            id="register-username" name="sender_address"
+                                                            id="sender-address" name="sender_address"
                                                             placeholder="john doe" aria-describedby="register-username"
                                                             tabindex="1" autofocus value="{{ old('sender_address') }}"
                                                             required />
@@ -336,6 +335,44 @@
                                             <div class="col-md-12" style="display:flex;">
                                                 <div class="mb-1 col-md-6" style="margin-left: 10px;">
                                                     <label for="register-product_description" class="form-label">
+                                                        نوع الشحنة
+                                                    </label>
+                                                    <select class="form-select select2" id="is_receive-select"
+                                                        class="form-control text-center" data-placeholder="نوع المستخدم"
+                                                        name="is_receive" required>
+                                                        <option value="" class="fs-4 text-center" selected disabled>
+                                                            <span>إختر نوع الشحنة</span>
+                                                        </option>
+                                                        <option value="1" class="fs-4 text-center">
+                                                            <span>إستلام</span>
+                                                        </option>
+                                                        <option value="0" class="fs-4 text-center">
+                                                            <span>تسليم</span>
+                                                        </option>
+                                                    </select>
+                                                    @error('is_receive')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="mb-1 col-md-6">
+                                                    <label for="coupon_code" class="form-label"> كود الخصم</label>
+                                                    <input type="number"
+                                                        class="form-control @error('coupon_code') is-invalid @enderror"
+                                                        id="coupon_code" name="coupon_code" placeholder=""
+                                                        aria-describedby="coupon_code" tabindex="2"
+                                                        value="{{ old('coupon_code') }}" required />
+                                                    @error('coupon_code')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" style="display:flex;">
+                                                <div class="mb-1 col-md-6" style="margin-left: 10px;">
+                                                    <label for="register-product_description" class="form-label">
                                                         طريقة تحويل الفلوس
                                                     </label>
                                                     <select class="form-select select2" id="money_transfer_type-select"
@@ -411,13 +448,16 @@
                                                         </span>
                                                     @enderror
                                                 </div>
+                                                <input type="hidden" id="confirm-and-recreate-input" value="0" name="confirm_flag">
                                             </div>
                                             <div class="col-md-12 offset-md-5">
                                                 <br>
                                                 <button type="submit"
-                                                    class="btn btn-primary mr-1 mb-1 waves-effect waves-light ">{{ __('Submit') }}</button>
+                                                    class="btn btn-primary mr-2 mb-1 waves-effect waves-light ">{{ __('تأكيد') }}</button>
+                                                <button type="button"
+                                                    class="btn btn-success mr-2 mb-1 waves-effect waves-light " id="confirm-and-recreate-button">{{ __('تأكيد و عمل شحنة جدبدة') }}</button>
                                                 <button type="reset"
-                                                    class="btn btn-outline-warning mr-1 mb-1 waves-effect waves-light">{{ __('Reset') }}</button>
+                                                    class="btn btn-outline-warning mr-2 mb-1 waves-effect waves-light">{{ __('Reset') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -442,11 +482,55 @@
 
     {{-- show shop details inputs if the user is seller --}}
     <script>
+        $("#confirm-and-recreate-button").click(function(){
+            $("#confirm-and-recreate-input").val(1);
+            $("#shipment-form").submit();
+            
+        });
+        $("#receiver-phone").keyup(function(){
+            var phone = $(this).val();
+            if(phone){
+                var url = "{{ URL::to('/') }}" + '/shipments/get/clinet/data' + "/" + phone;
+                $.ajax({
+                    type: 'get',
+                    dataType: 'html',
+                    url: url,
+                    success: function(data) {
+                        data = JSON.parse(data);
+                        $("#receiver-name").val(data.name);
+                        $("#receiver-address").val(data.address);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+            }
+        });
+        $("#sender-phone").keyup(function(){
+            var phone = $(this).val();
+            if(phone){
+                var url = "{{ URL::to('/') }}" + '/shipments/get/clinet/data' + "/" + phone;
+                $.ajax({
+                    type: 'get',
+                    dataType: 'html',
+                    url: url,
+                    success: function(data) {
+                        data = JSON.parse(data);
+                        $("#sender-name").val(data.name);
+                        $("#sender-address").val(data.address);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+            }
+            
+
+        });
         $("#government-select").on("change", function() {
             let government = $(this).val();
 
             var url = "{{ URL::to('/') }}" + '/government/areas' + "/" + government;
-            console.log(url);
             $.ajax({
                 type: 'get',
                 dataType: 'html',
@@ -529,7 +613,6 @@
                     }
                 },
                 error: function(err) {
-                    alert(1);
                     console.log(err);
                 }
             });
