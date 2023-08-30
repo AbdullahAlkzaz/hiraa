@@ -55,9 +55,11 @@
                                                     <option value="0" class="fs-4 text-center" selected>
                                                         <span>مندوب</span>
                                                     </option>
-                                                    <option value="1" class="fs-4 text-center">
+                                                    @if(!auth()->user()->type_id == \App\Models\Type::OFFICE_TYPE)
+                                                    <option value="1" class="fs-4 text-center" >
                                                         <span>بائع</span>
                                                     </option>
+                                                    @endif
                                                 </select>
                                             </div>
                                             <div class="col-md-12" style="display:flex;">

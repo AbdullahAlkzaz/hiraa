@@ -52,8 +52,10 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>المحافظة</th>
-                                    <th>المنطقة</th>
+                                    <th>(من)المحافظة</th>
+                                    <th>(من)المنطقة</th>
+                                    <th>(الى)المحافظة</th>
+                                    <th>(الى)المنطقة</th>
                                     <th>الحجم</th>
                                     <th>السعر</th>
                                     @role('admin')
@@ -65,6 +67,8 @@
                                 @foreach ($prices as $key => $price)
                                     <tr>
                                         <td>{{ $price->firstItem + $key + 1 }}</td>
+                                        <td>{{ $price->from_government }}</td>
+                                        <td>{{ $price->from_area }}</td>
                                         <td>{{ $price->government }}</td>
                                         <td>{{ $price->area }}</td>
                                         <td> {{ $price->size }} </td>

@@ -34,6 +34,13 @@
             "role": "admin"
         },
         {
+            "url": "coupons",
+            "name": "أكواد الخصم",
+            "icon": "percent",
+            "slug": "coupons",
+            "role": "admin"
+        },
+        {
             "url": "shipments",
             "name": "الشحنات",
             "icon": "truck",

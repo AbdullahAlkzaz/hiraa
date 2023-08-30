@@ -53,10 +53,9 @@
     </ul>
   </div-->
     <a class="nav-link modern-nav-toggle " data-bs-toggle="collapse">
-        <i class="d-block d-xl-none text-primary toggle-icon font-medium-4 fa fa-list"></i>
+        <i class="d-block d-xl-none text-primary toggle-icon font-medium-4 fa ficon" data-feather="list"></i>
     </a>
     <ul class="nav navbar-nav align-items-center ms-auto">
-
         <li class="nav-item dropdown dropdown-language">
             <a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown"
                 aria-haspopup="true">
@@ -198,7 +197,8 @@
         <li class="nav-item dropdown dropdown-notification me-25" dir="RTL">
             <a class="nav-link" href="javascript:void(0);" onclick="getNotifications()" data-bs-toggle="dropdown">
                 <i class="ficon" data-feather="bell"></i>
-                <span class="badge notifications-count rounded-pill bg-danger badge-up">{{session("notifications_count")}}</span>
+                <span
+                    class="badge notifications-count rounded-pill bg-danger badge-up">{{ session('notifications_count') }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end">
                 <li class="dropdown-menu-header">
@@ -230,7 +230,7 @@
                 </div>
                 <span class="avatar">
                     <img class="round"
-                        src="{{ Auth::user() ? asset('storage/'.Auth::user()->image) ?? asset('images/portrait/small/point-logo.png') : asset('images/portrait/small/point-logo.png') }}"
+                        src="{{ Auth::user() ? asset('storage/' . Auth::user()->image) ?? asset('images/portrait/small/point-logo.png') : asset('images/portrait/small/point-logo.png') }}"
                         alt="avatar" height="40" width="40">
                     <span class="avatar-status-online"></span>
                 </span>
@@ -294,8 +294,8 @@
                 @endif
             </div>
         </li>
-
     </ul>
+
 </div>
 </nav>
 

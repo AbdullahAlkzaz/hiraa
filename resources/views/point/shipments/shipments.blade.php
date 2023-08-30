@@ -32,7 +32,7 @@
 
 
 
-    @include('point.shipments.search.search')
+    @include('point.shipments.search.search',['statuses' => $statuses])
 
     <div class="row">
         <div class="col-12">
@@ -55,12 +55,20 @@
                                     <th>اسم المستلم</th>
                                     <th>هاتف المستلم</th>
                                     <th>عنوان المستلم</th>
+                                    <th>كود الخصم</th>
                                     <th>وصف الشحنة</th>
                                     @if (auth()->user()->hasRole('admin') || auth()->user()->type_id == \App\Models\Type::REPRESENTATIVE_TYPE)
                                         <th>حالة الشحنة</th>
                                         <th>سبب الحالة</th>
                                         <th>تاريخ الحالة</th>
-                                        <th>نوع الشحن</th>
+                                        <th>الشركة</th>
+                                    @endif
+                                    <th>نوع الشحن</th>
+                                    @if (auth()->user()->type_id == \App\Models\Type::COMPANY_TYPE && !auth()->user()->hasRole("admin"))
+                                        <th>{{ __('المكتب') }}</th>
+                                    @endif
+                                    @if (auth()->user()->hasRole('admin') || auth()->user()->type_id == \App\Models\Type::COMPANY_TYPE || auth()->user()->type_id == \App\Models\Type::OFFICE_TYPE)
+                                        <th>{{ __('المندوب') }}</th>
                                     @endif
                                     @if (auth()->user()->hasRole('admin') || auth()->user()->type_id != \App\Models\Type::REPRESENTATIVE_TYPE)
                                         <th>{{ __('Action') }}</th>
@@ -79,6 +87,7 @@
                                         <td>{{ $shipment->receiver_phone }}</td>
                                         <td> {{ $shipment->receiver_address . ', ' . $shipment->receiver_government . ', ' . $shipment->receiver_area }}
                                         </td>
+                                        <td> {{ $shipment->coupon_code }}</td>
                                         <td> {{ $shipment->product_description }}</td>
                                         {{-- <td> {{ $shipment->status }}</td> --}}
                                         @if (auth()->user()->hasRole('admin') || auth()->user()->type_id == \App\Models\Type::REPRESENTATIVE_TYPE)
@@ -102,9 +111,66 @@
                                                         style="display:block !important; width: 140px;">{{ $shipment->status_date }}</span>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="input-group input-group-merge ">
+                                                    <select class="form-control text-center company-select"
+                                                        data-shipment_id="{{ $shipment->id }}" name="company_id"
+                                                        style="width: 140px;">
+                                                        <option value="" @selected(is_null($shipment->company_id))
+                                                            class="fs-4 text-center">
+                                                            <span>أختر شركة</span>
+                                                        </option>
+                                                        @foreach ($companies as $company)
+                                                            <option value="{{ $company->id }}"
+                                                                @selected((int)$shipment->company_id == $company->id) class="fs-4 text-center">
+                                                                <span>{{ $company->name }}</span>
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
                                         @endif
-                                        <td> {{ $shipment->is_receive == 1 ? 'إستلام' : 'تسليم' }}
+                                        <td> {{ $shipment->is_receive == 1 ? 'إستلام' : 'تسليم' }}</td>
+                                        @if (auth()->user()->type_id == \App\Models\Type::COMPANY_TYPE && !auth()->user()->hasRole("admin"))
+                                        <td>
+                                            <div class="input-group input-group-merge ">
+                                                <select class="form-control text-center office-select"
+                                                    data-shipment_id="{{ $shipment->id }}" name="office_id"
+                                                    style="width: 140px;">
+                                                    <option value="" @selected(is_null($shipment->representative))
+                                                        class="fs-4 text-center">
+                                                        <span>أخترمكتب</span>
+                                                    </option>
+                                                    @foreach ($offices as $office)
+                                                        <option value="{{ $office->id }}"
+                                                            @selected($shipment->office_id == $office->id) class="fs-4 text-center">
+                                                            <span>{{ $office->name }}</span>
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </td>
+                                        @endif
+                                        @if (auth()->user()->hasRole('admin') || auth()->user()->type_id == \App\Models\Type::COMPANY_TYPE || auth()->user()->type_id == \App\Models\Type::OFFICE_TYPE)
+                                            <td>
+                                                <div class="input-group input-group-merge ">
+                                                    <select class="form-control text-center representative-select"
+                                                        data-shipment_id="{{ $shipment->id }}" name="representative_id"
+                                                        style="width: 140px;">
+                                                        <option value="" @selected(is_null($shipment->representative))
+                                                            class="fs-4 text-center">
+                                                            <span>أختر مندوب</span>
+                                                        </option>
+                                                        @foreach ($repres as $rep)
+                                                            <option value="{{ $rep->id }}"
+                                                                @selected($shipment->representative_id == $rep->id) class="fs-4 text-center">
+                                                                <span>{{ $rep->name }}</span>
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        @endif
                                         @if (auth()->user()->hasRole('admin') || auth()->user()->type_id != \App\Models\Type::REPRESENTATIVE_TYPE)
                                             <td>
 
@@ -235,6 +301,226 @@
             })
 
         });
+        $(".company-select").change(function() {
+            var company_id = $(this).val();
+
+            var shipmentId = $(this).attr("data-shipment_id");
+            var url = 'shipments/select/shipment/company';
+            url = "{{ url('') }}" + "/" + url
+            Swal.fire({
+                title: "{{ __('هل أنت متأكد') }}",
+                text: "{{ __('ستقوم بإختيار الشركة للشحنة!') }}",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: "{{ __('نعم متأكد!') }}",
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                cancelButtonText: "{{ __('إلغاء') }}",
+                buttonsStyling: false,
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: 'post',
+                        url: url,
+                        data: {
+                            shipment_id: shipmentId,
+                            company_id: company_id,
+                            _token: "{{ csrf_token() }}",
+                        },
+                        dataType: 'html',
+                        success: function(data) {
+                            if (data == 0) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    type: "fail",
+                                    title: 'لا يمكن تعيين هذه الشركة الآن',
+                                    text: 'عذرا لا يمكنك تعيين هذه الشركة الان',
+                                    confirmButtonClass: 'btn btn-success',
+                                });
+                                return 0;
+                            } else {
+                                Swal.fire({
+                                    type: "success",
+                                    title: 'تم تعيين الشركة!',
+                                    text: 'تم تعيين الشركة كما تريد',
+                                    confirmButtonClass: 'btn btn-success',
+                                })
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'لا يمكن تعيين هذه الشركة الآن',
+                                text: JSON.parse(err.responseText).message,
+                                customClass: {
+                                    confirmButton: 'btn btn-success'
+                                }
+                            })
+                        }
+                    });
+
+
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "{{ __('تم الإلغاء') }}",
+                        text: "{{ __('لم يتم تعيين الشركة') }}",
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-success',
+                    })
+                }
+            })
+
+        });
+        $(".office-select").change(function() {
+            var office_id = $(this).val();
+
+            var shipmentId = $(this).attr("data-shipment_id");
+            var url = 'shipments/select/shipment/office';
+            url = "{{ url('') }}" + "/" + url
+            Swal.fire({
+                title: "{{ __('هل أنت متأكد') }}",
+                text: "{{ __('ستقوم بإختيار الشركة للشحنة!') }}",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: "{{ __('نعم متأكد!') }}",
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                cancelButtonText: "{{ __('إلغاء') }}",
+                buttonsStyling: false,
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: 'post',
+                        url: url,
+                        data: {
+                            shipment_id: shipmentId,
+                            office_id: office_id,
+                            _token: "{{ csrf_token() }}",
+                        },
+                        dataType: 'html',
+                        success: function(data) {
+                            if (data == 0) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    type: "fail",
+                                    title: 'لا يمكن تعيين هذه الشركة الآن',
+                                    text: 'عذرا لا يمكنك تعيين هذه الشركة الان',
+                                    confirmButtonClass: 'btn btn-success',
+                                });
+                                return 0;
+                            } else {
+                                Swal.fire({
+                                    type: "success",
+                                    title: 'تم تعيين الشركة!',
+                                    text: 'تم تعيين الشركة كما تريد',
+                                    confirmButtonClass: 'btn btn-success',
+                                })
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'لا يمكن تعيين هذه الشركة الآن',
+                                text: JSON.parse(err.responseText).message,
+                                customClass: {
+                                    confirmButton: 'btn btn-success'
+                                }
+                            })
+                        }
+                    });
+
+
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "{{ __('تم الإلغاء') }}",
+                        text: "{{ __('لم يتم تعيين الشركة') }}",
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-success',
+                    })
+                }
+            })
+
+        });
+        $(".representative-select").change(function() {
+            var representative_id = $(this).val();
+
+            var shipmentId = $(this).attr("data-shipment_id");
+            var url = 'shipments/select/shipment/representative';
+            url = "{{ url('') }}" + "/" + url
+            Swal.fire({
+                title: "{{ __('هل أنت متأكد') }}",
+                text: "{{ __('ستقوم بإختيار المندوب للشحنة!') }}",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: "{{ __('نعم متأكد!') }}",
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                cancelButtonText: "{{ __('إلغاء') }}",
+                buttonsStyling: false,
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        type: 'post',
+                        url: url,
+                        data: {
+                            shipment_id: shipmentId,
+                            representative_id: representative_id,
+                            _token: "{{ csrf_token() }}",
+                        },
+                        dataType: 'html',
+                        success: function(data) {
+                            if (data == 0) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    type: "fail",
+                                    title: 'لا يمكن تعيين هذه المندوب الآن',
+                                    text: 'عذرا لا يمكنك تعيين هذه المندوب الان',
+                                    confirmButtonClass: 'btn btn-success',
+                                });
+                                return 0;
+                            } else {
+                                Swal.fire({
+                                    type: "success",
+                                    title: 'تم تعيين المندوب!',
+                                    text: 'تم تعيين المندوب كما تريد',
+                                    confirmButtonClass: 'btn btn-success',
+                                })
+                            }
+                        },
+                        error: function(err) {
+                            console.log(err);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'لا يمكن تعيين هذه المندوب الآن',
+                                text: JSON.parse(err.responseText).message,
+                                customClass: {
+                                    confirmButton: 'btn btn-success'
+                                }
+                            })
+                        }
+                    });
+
+
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "{{ __('تم الإلغاء') }}",
+                        text: "{{ __('لم يتم تعيين الشركة') }}",
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-success',
+                    })
+                }
+            })
+
+        });
+
         $(document).ready(function() {
             $('.delete-this').on('click', function() {
                 var id = ($(this).attr("data-userId"));

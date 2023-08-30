@@ -8,13 +8,13 @@
     <div class="content-header-left col-md-9 col-12 mb-2">
         <div class="row breadcrumbs-top">
             <div class="col-12">
-                <h2 class="content-header-title float-left mb-0">{{ __('المكاتب') }}</h2>
+                <h2 class="content-header-title float-left mb-0">{{ __('أكواد الخصم') }}</h2>
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            {{ __('المكاتب') }}
+                            {{ __('أكواد الخصم') }}
                         </li>
 
                     </ol>
@@ -35,16 +35,16 @@
 
 
 
-    @include('point.users.search.search')
+    @include('point.coupons.search.search')
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="mb-0">{{ __('المكاتب') }}</h4>
-                    @if(auth()->user()->type_id == \App\Models\Type::COMPANY_TYPE)
-                    <a href="{{ route("offices.create") }}" class="btn btn-primary">انشاء المكتب</a>
-                    @endif
+                    <h4 class="mb-0">{{ __('أكواد الخصم') }}</h4>
+                    @role('admin')
+                    <a href="{{ route("coupons.create") }}" class="btn btn-primary">انشاء كود</a>
+                    @endrole
                 </div>
                 <div class="card-content">
                     <div class="table-responsive mt-1">
@@ -52,39 +52,21 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>اسم الالمكتب</th>
-                                    <th>البريد الالكتروني</th>
-                                    <th>الهاتف</th>
-                                    <th>اسم المدير</th>
-                                    <th>هاتف المدير</th>
-                                    <th>بريد المدير</th>
-                                    <th class="city">المحافظة</th>
-                                    <th class="city">المدينة</th>
-                                    <th class="city">المنطقة</th>
-                                    <th>العنوان</th>
-                                    <th> وقت التسجيل </th>
+                                    <th>الكود</th>
+                                    <th>عدد مرات الاستخدام</th>
+                                    <th>النسبة</th>
                                     @role('admin')
                                     <th>{{ __('Action') }}</th>
                                     @endrole
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($offices as $key => $office)
-                                    @if(!$office->hasRole('admin'))
+                                @foreach ($coupons as $key => $coupon)
                                     <tr>
-                                        <td>{{ $office->firstItem + $key + 1 }}</td>
-                                        <td>{{ $office->name }}</td>
-                                        <td>{{ $office->email }}</td>
-                                        <td> {{ $office->phone }} </td>
-                                        <td> {{ $office?->office_details?->manager_name }} </td>
-                                        <td> {{ $office?->office_details?->manager_phone }} </td>
-                                        <td> {{ $office?->office_details?->manager_email }} </td>
-                                        </td>
-                                        <td class="city">{{ $office->government }}</td>
-                                        <td>{{ $office->city }}</td>
-                                        <td>{{ $office->area }}</td>
-                                        <td>{{ $office->address_1 . ', ' . $office->address_2 }}</td>
-                                        <td>{{ $office->created_at }}</td>
+                                        <td>{{ $coupon->firstItem + $key + 1 }}</td>
+                                        <td>{{ $coupon->code }}</td>
+                                        <td>{{ $coupon->usages }}</td>
+                                        <td>{{ $coupon->percentage }}%</td>
                                         @role('admin')
                                         <td>
 
@@ -94,8 +76,8 @@
                                                     Actions
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="{{ route('offices.show', $office->id) }}">تعديل</a>
-                                                    <a class="dropdown-item delete-this" data-userId="{{ $office->id }}">حذف</a>
+                                                    <a class="dropdown-item" href="{{ route('coupons.show', $coupon->id) }}">تعديل</a>
+                                                    <a class="dropdown-item delete-this" data-userId="{{ $coupon->id }}">حذف</a>
                                                 </div>
                                             </div>
 
@@ -103,8 +85,8 @@
 
 
 
-                                            <form id="destroy-user_{{ $office->id }}"
-                                                action="{{ route('offices.destroy', $office->id) }}" method="POST"
+                                            <form id="destroy-user_{{ $coupon->id }}"
+                                                action="{{ route('coupons.destroy', $coupon->id) }}" method="POST"
                                                 style="display: none;">
                                                 @method('DELETE')
                                                 @csrf
@@ -113,12 +95,11 @@
                                         </td>
                                         @endrole
                                     </tr>
-                                    @endif
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td dir="rtl" colspan="7">{{ $offices->links('pagination::bootstrap-4') }} </td>
+                                    <td dir="rtl" colspan="7">{{ $coupons->links('pagination::bootstrap-4') }} </td>
                                 </tr>
                             </tfoot>
 

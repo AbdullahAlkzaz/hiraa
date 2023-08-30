@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
@@ -80,6 +81,9 @@ Route::middleware([Authentication::class])->group(function () {
         Route::get("/get/clinet/data/{phone}", [ShipmentController::class, "getClientByPhone"])->name("shipments.getClientByPhone");
         Route::put("update", [ShipmentController::class, "update"])->name('shipments.update');
         Route::post("change/shipment/status", [ShipmentController::class, "changeStatus"])->name('shipments.updateStatus');
+        Route::post("select/shipment/representative", [ShipmentController::class, "assignRepresentative"])->name('shipments.assignRepresentative');
+        Route::post("select/shipment/company", [ShipmentController::class, "assignCompany"])->name('shipments.assignCompany');
+        Route::post("select/shipment/office", [ShipmentController::class, "assignOffice"])->name('shipments.assignCompany');
         
     });
     Route::group(["prefix" => "prices"], function () {
@@ -89,6 +93,14 @@ Route::middleware([Authentication::class])->group(function () {
         Route::post("store/", [PriceController::class, "store"])->name("prices.store");
         Route::get("show/{id}", [PriceController::class, "show"])->name("prices.show");
         Route::put("update", [PriceController::class, "update"])->name('prices.update');
+    });
+    Route::group(["prefix" => "coupons"], function () {
+        Route::get("/", [CouponController::class, "index"])->name("coupons.index");
+        Route::delete("delete/{id}", [CouponController::class, "delete"])->name("coupons.destroy");
+        Route::get("create/", [CouponController::class, "create"])->name("coupons.create");
+        Route::post("store/", [CouponController::class, "store"])->name("coupons.store");
+        Route::get("show/{id}", [CouponController::class, "show"])->name("coupons.show");
+        Route::put("update", [CouponController::class, "update"])->name('coupons.update');
     });
 
     Route::group(["prefix" => "transactions"], function () {

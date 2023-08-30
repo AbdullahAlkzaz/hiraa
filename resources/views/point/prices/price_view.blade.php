@@ -47,7 +47,35 @@
                                         <div class="row">
                                             <div class="col-md-12" style="display:flex;">
                                                 <div class="mb-1 col-md-6" style="margin-left: 10px;">
-                                                    <label for="register-username" class="form-label">المحافظة</label>
+                                                    <label for="register-username" class="form-label">(من)المحافظة</label>
+                                                    <input type="text"
+                                                        class="form-control @error('from_government') is-invalid @enderror"
+                                                        id="register-username" name="from_government" placeholder="المحافظة"
+                                                        aria-describedby="register-userfrom_government" tabindex="1" autofocus
+                                                        value="{{ old('from_government', $price->from_government) }}" required />
+                                                    @error('from_government')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="mb-1 col-md-6">
+                                                    <label for="register-email" class="form-label">(من)المنطقة</label>
+                                                    <input type="text"
+                                                        class="form-control @error('from_area') is-invalid @enderror"
+                                                        id="register-from_area" name="from_area" placeholder="المنطقة"
+                                                        aria-describedby="register-from_area" tabindex="2"
+                                                        value="{{ old('from_area', $price->from_area) }}" required />
+                                                    @error('from_area')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" style="display:flex;">
+                                                <div class="mb-1 col-md-6" style="margin-left: 10px;">
+                                                    <label for="register-username" class="form-label">(الى)المحافظة</label>
                                                     <input type="text"
                                                         class="form-control @error('government') is-invalid @enderror"
                                                         id="register-username" name="government" placeholder="المحافظة"
@@ -60,7 +88,7 @@
                                                     @enderror
                                                 </div>
                                                 <div class="mb-1 col-md-6">
-                                                    <label for="register-email" class="form-label">المنطقة</label>
+                                                    <label for="register-email" class="form-label">(الى)المنطقة</label>
                                                     <input type="text"
                                                         class="form-control @error('area') is-invalid @enderror"
                                                         id="register-area" name="area" placeholder="المنطقة"

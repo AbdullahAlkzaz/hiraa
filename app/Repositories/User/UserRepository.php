@@ -70,6 +70,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             if(isset($data['email'])){
                 $query->where("email",$data['email']);
             }
+            if(auth()->user()->type_id == Type::OFFICE_TYPE ){
+                $query->where("office_id", auth()->user()->id);
+            }
         })->orderBy("id","DESC")->paginate(10);
     }
     public function getCompanies($data){

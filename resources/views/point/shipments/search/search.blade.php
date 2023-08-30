@@ -55,6 +55,25 @@
 
                             </fieldset>
                         </div>
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <label for="users-list-email">{{ __('حالة الشحنة') }}</label>
+                            <fieldset class="form-group">
+                                <div class="input-group input-group-merge ">
+                                    <select class="form-control text-center"name="status">
+                                        <option value="" class="fs-4 text-center">
+                                                <span>كل الشحنات</span>
+                                        </option>
+                                        @foreach ($statuses as $status)
+                                            <option value="{{ $status }}"
+                                                @selected((isset($_GET['status'])) && $_GET['status'] == $status) class="fs-4 text-center">
+                                                <span>{{ $status }}</span>
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </fieldset>
+                        </div>
+                        
                         <div class="col-12 ">
                             <br>
                             <button type="submit" class="btn btn-info">{{ __('Find') }}</button>

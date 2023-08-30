@@ -35,7 +35,7 @@ class UserRequest extends FormRequest
                 "id" => "required|exists:users,id|integer|min:1",
                 "name" => "required|min:4|max:191",
                 "email" => "required|email|min:8|max:191|unique:users,email," . $this->id,
-                'phone' => 'required|regex:/(01)[0-9]{9}/unique:users,phone,' . $this->id, 
+                'phone' => 'required|regex:/(01)[0-9]{9}/|unique:users,phone,' . $this->id, 
                 'is_seller' => 'required|in:0,1',
                 'id_image_front' => 'nullable|image|mimes:jpeg,png,jpg,gif',
                 'id_image_back' => 'nullable|image|mimes:jpeg,png,jpg,gif',
@@ -66,7 +66,7 @@ class UserRequest extends FormRequest
                     'confirmed'
                 ],
                 "name" => "required|min:4|max:191",
-                'phone' => 'required|regex:/(01)[0-9]{9}/unique:users,phone', 
+                'phone' => 'required|regex:/(01)[0-9]{9}/|unique:users,phone', 
                 'is_seller' => 'required|in:0,1',
                 'id_image_front' => 'required|image|mimes:jpeg,png,jpg,gif',
                 'id_image_back' => 'required|image|mimes:jpeg,png,jpg,gif',

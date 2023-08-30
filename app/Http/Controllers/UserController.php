@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Type;
 use App\Models\Wallet;
 use Exception;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class UserController extends Controller
         ]);
     }
     public function create(){
-        if (!auth()->user()->hasPermissionTo('create-users') && !auth()->user()->hasRole('admin')) {
+        if (!auth()->user()->hasPermissionTo('create-users') && !(auth()->user()->type_id == Type::COMPANY_TYPE || auth()->user()->type_id == Type::OFFICE_TYPE)) {
             session()->flash("message",  __("ليس لديك الصلاحية"));
             return back();
         }
@@ -126,7 +127,9 @@ class UserController extends Controller
             $data = $request->validated();
             $data['type_id'] = $data['is_seller'] == 1 ? 3 : 4; 
             $data['email_verified_at'] = now(); 
-            $data['approved'] = 1; 
+            $data['approved'] = 1;
+            $data['company_id'] = auth()->user()->type_id == Type::COMPANY_TYPE ? auth()->user()->id : null;
+            $data['office_id'] = auth()->user()->type_id == Type::OFFICE_TYPE ? auth()->user()->id : null;
             if($request->hasFile('id_image_front')){
                 $path = Storage::disk('public')->put('id_images', $request->id_image_front);
                 $data['id_image_front'] = $path;

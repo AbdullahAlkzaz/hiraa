@@ -604,7 +604,7 @@
                         Swal.fire({
                             position: 'top-end',
                             type: 'success',
-                            html: 'هذه المحافظة و المنطقة غير موجودة في نطاقنا',
+                            html: 'السعر غير محدد من فطلك اكتبه بيدك',
                             showConfirmButton: false,
                             timer: 3000,
                             confirmButtonClass: 'btn btn-primary',

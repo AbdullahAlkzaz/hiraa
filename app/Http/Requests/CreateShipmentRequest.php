@@ -38,7 +38,7 @@ class CreateShipmentRequest extends FormRequest
             "receiver_government" => "required|string",
             "receiver_area" => "required|string",
             "receiver_id" => "nullable|string",
-            "coupon_code" => "required|string",
+            "coupon_code" => "nullable|string",
             "is_receive" => "required|in:0,1",
             "sender_id" => "required_if:creator_type,admin|string",
             "sender_name" => "required_if:creator_type,admin|string",

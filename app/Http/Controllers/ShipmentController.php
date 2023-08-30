@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateShipmentRequest;
 use App\Http\Requests\UpdateShipmentRequest;
+use App\Models\Coupon;
 use App\Models\Notification;
 use App\Models\Price;
 use App\Models\Shipment;
@@ -24,24 +25,44 @@ class ShipmentController extends Controller
     private Transaction $transactionModel;
     private User $userModel;
     private Notification $notificationModel;
+    private Coupon $couponModel;
     public function __construct(
         ShipmentRepositoryInterface $repository,
         Price $priceModel,
         User $userModel,
         Transaction $transactionModel,
-        Notification $notificationModel
+        Notification $notificationModel,
+        Coupon $couponModel
     ) {
         $this->repository = $repository;
         $this->priceModel = $priceModel;
         $this->userModel = $userModel;
         $this->transactionModel = $transactionModel;
         $this->notificationModel = $notificationModel;
+        $this->couponModel = $couponModel;
     }
     public function index(Request $request)
     {
         $shipments = $this->repository->getShipments($request->all());
+        $companies = $this->userModel->where("type_id", Type::COMPANY_TYPE)->where("approved", 1)->get();
+        $offices = [];
+        if(auth()->user()->type_id == Type::COMPANY_TYPE){
+            $offices = $this->userModel->where("type_id", Type::OFFICE_TYPE)->where("company_id", auth()->user()->id)->where("approved", 1)->get();
+        }
+        $repres = $this->userModel->where("type_id", Type::REPRESENTATIVE_TYPE)->where(function($query){
+            if(auth()->user()->hasRole("admin")){
+                $query->where("company_id", auth()->user()->id)->orWhereNull("company_id");
+            }elseif(auth()->user()->type_id == Type::COMPANY_TYPE){
+                $query->where("company_id", auth()->user()->id);
+            }elseif(auth()->user()->type_id == Type::OFFICE_TYPE){
+                $query->where("office_id", auth()->user()->id);
+            }
+        })->where("approved", 1)->get();
         return view("point.shipments.shipments")->with([
             'shipments' => $shipments,
+            'companies' => $companies,
+            'repres' => $repres,
+            'offices' => $offices,
             'statuses' => Shipment::STATUSES,
         ]);
     }
@@ -66,6 +87,16 @@ class ShipmentController extends Controller
             DB::beginTransaction();
             $data = $request->validated();
             unset($data['creator_type']);
+            $code_flag = false;
+            if($request->coupon_code && $request->coupon_code !=""){
+                $code = $this->couponModel->where("code", $request->coupon_code)->first();
+                if((int)$code->usages > 0 ){
+                    $code->usages = $code->usages - 1;
+                    $code->update();
+                    $code_flag = true;
+                    $data['point_price'] = $data['point_price'] - (($data['point_price'] * $code->percentage) / 100);
+                }
+            }
             $admin_user = $this->userModel->where("email", User::ADMIN_EMAIL)->first();
             if (auth()->user()->id == $admin_user->id) {
                 $data['status'] = "نقطة أ";
@@ -75,7 +106,11 @@ class ShipmentController extends Controller
             $shipment = $this->repository->create($data);
             $client = $this->createSellerIfNotExists($data);
             DB::commit();
-            session()->flash('message', __("تم إنشاء الشحنة بنجاح"));
+            $message = "تم انشاء الشحنة بدون كود خصم";
+            if($code_flag){
+                $message = "تم انشاء الشحنة بكود الخصم";
+            }
+            session()->flash('message', $message);
             if ($request->confirm_flag == 1) {
                 return back();
             } else {
@@ -107,7 +142,13 @@ class ShipmentController extends Controller
     }
     public function getPrice($size, $area, $government)
     {
-        $shipmentPrice = $this->priceModel->where("size", $size)->where("area", $area)->where("government", $government)->first();
+        $shipmentPrice = $this->priceModel
+        ->where("size", $size)
+        ->where("area", $area)
+        ->where("government", $government)
+        ->where("from_area",auth()->user()->area)
+        ->where("from_government",auth()->user()->government)
+        ->first();
         if (!$shipmentPrice) {
             return false;
         }
@@ -277,6 +318,28 @@ class ShipmentController extends Controller
                 "name" => $client->name,
                 "address" => $client->address_1 . " . " . $client->address_2,
             ];
+        }
+        return 0;
+    }
+
+    public function assignRepresentative(Request $request){
+        $update = $this->repository->updateById($request->shipment_id,['representative_id' => $request->representative_id]);
+        if($update){
+            return 1;
+        }
+        return 0;
+    }
+    public function assignCompany(Request $request){
+        $update = $this->repository->updateById($request->shipment_id,['company_id' => $request->company_id]);
+        if($update){
+            return 1;
+        }
+        return 0;
+    }
+    public function assignOffice(Request $request){
+        $update = $this->repository->updateById($request->shipment_id,['office_id' => $request->office_id]);
+        if($update){
+            return 1;
         }
         return 0;
     }

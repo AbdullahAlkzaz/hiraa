@@ -30,7 +30,9 @@ class UpdatePriceRequest extends FormRequest
         return [
             "id" => "required|integer|exists:prices,id",
             "government" => "required|string|min:2",
+            "from_government" => "required|string|min:2",
             "area" => "required|string|min:2",
+            "from_area" => "required|string|min:2",
             "price" => "required|numeric|min:1",
             "size" => "required|string|in:". implode(",", Price::SIZES),
         ];

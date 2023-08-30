@@ -24,7 +24,7 @@ class OfficeController extends Controller
         ]);
     }
     public function create(){
-        if (!auth()->user()->hasPermissionTo('create-users') && !auth()->user()->hasRole('admin')) {
+        if (!auth()->user()->hasPermissionTo('create-users') && !auth()->user()->type_id == Type::COMPANY_TYPE) {
             session()->flash("message",  __("ليس لديك الصلاحية"));
             return back();
         }

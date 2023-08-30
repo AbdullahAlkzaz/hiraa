@@ -41,15 +41,20 @@ class ShipmentRepository extends BaseRepository implements ShipmentRepositoryInt
             if(isset($data['sender_phone']) && $data['sender_phone'] != ""){
                 $query->where("sender_phone", $data['sender_phone']);
             }
+            if(isset($data['status']) && $data['status'] != ""){
+                $query->where("status", $data['status']);
+            }
             if(isset($data['id']) && $data['id'] != ""){
                 $query->where("id", $data['id']);
             }
             if(auth()->user()->type_id == Type::REPRESENTATIVE_TYPE){
-                $query->where("company_id", auth()->user()->company_id)
-                ->where("office_id", auth()->user()->office_id);
-            }elseif(auth()->user()->type_id == Type::SELLER_TYPE){
+                $query->where("representative_id", auth()->user()->id);
+            }elseif(auth()->user()->type_id == Type::SELLER_TYPE || (auth()->user()->type_id == Type::COMPANY_TYPE && !auth()->user()->hasRole("admin"))){
                 $query->where("company_id", auth()->user()->id);
+            }elseif(auth()->user()->type_id == Type::OFFICE_TYPE){
+                $query->where("office_id", auth()->user()->id);
             }
+            
         })
         ->orderBy("id", "DESC")
         ->paginate(10);

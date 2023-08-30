@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Price;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreatePriceRequest extends FormRequest
+class UpdateCouponRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,12 +27,9 @@ class CreatePriceRequest extends FormRequest
     public function rules()
     {
         return [
-            "government" => "required|string|min:2",
-            "from_government" => "required|string|min:2",
-            "area" => "required|string|min:2",
-            "from_area" => "required|string|min:2",
-            "price" => "required|numeric|min:1",
-            "size" => "required|string|in:". implode(",", Price::SIZES),
+            "code" => "required|string|min:2",
+            "percentage" => "required|numeric|min:0",
+            "usages" => "required|integer|min:0",
         ];
     }
 }

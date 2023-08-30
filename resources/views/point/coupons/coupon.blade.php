@@ -42,9 +42,9 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="mb-0">{{ __('المكاتب') }}</h4>
-                    @if(auth()->user()->type_id == \App\Models\Type::COMPANY_TYPE)
+                    @role('admin')
                     <a href="{{ route("offices.create") }}" class="btn btn-primary">انشاء المكتب</a>
-                    @endif
+                    @endrole
                 </div>
                 <div class="card-content">
                     <div class="table-responsive mt-1">
@@ -76,9 +76,9 @@
                                         <td>{{ $office->name }}</td>
                                         <td>{{ $office->email }}</td>
                                         <td> {{ $office->phone }} </td>
-                                        <td> {{ $office?->office_details?->manager_name }} </td>
-                                        <td> {{ $office?->office_details?->manager_phone }} </td>
-                                        <td> {{ $office?->office_details?->manager_email }} </td>
+                                        <td> {{ $office->office_details->manager_name }} </td>
+                                        <td> {{ $office->office_details->manager_phone }} </td>
+                                        <td> {{ $office->office_details->manager_email }} </td>
                                         </td>
                                         <td class="city">{{ $office->government }}</td>
                                         <td>{{ $office->city }}</td>

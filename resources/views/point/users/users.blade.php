@@ -55,9 +55,9 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="mb-0">{{ __('users_users') }}</h4>
-                    @role('admin')
+                    @if(auth()->user()->type_id == \App\Models\Type::COMPANY_TYPE || auth()->user()->type_id == \App\Models\Type::OFFICE_TYPE)
                     <a href="{{ route("users.create") }}" class="btn btn-primary">انشاء مستخدم</a>
-                    @endrole
+                    @endif
                 </div>
                 <div class="card-content">
                     <div class="table-responsive mt-1">
