@@ -111,6 +111,11 @@
                                             <td>مندوب</td>
                                         @endif
                                         <td>{{ $user->product_category }}</td>
+                                        @if($user->type_id == \App\Models\Type::SELLER_TYPE)
+                                        <td><a class="btn btn-primary" href="{{route("send.transactions",$user->id)}}">ارسال التحويلات</a></td>
+                                        @else
+                                        <td><a class="btn btn-default" @disabled(true) href="#">ارسال التحويلات</a></td>
+                                        @endif
                                         <td>{{ $user->address_1 . ', ' . $user->address_2 }}</td>
                                         <td>{{ $user->company_name ?? '-' }}</td>
                                         <td>{{ $user->created_at }}</td>

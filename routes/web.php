@@ -110,6 +110,7 @@ Route::middleware([Authentication::class])->group(function () {
         Route::post("store/", [WalletController::class, "store"])->name("transactions.store");
         Route::get("show/{id}", [WalletController::class, "show"])->name("transactions.show");
         Route::put("update", [WalletController::class, "update"])->name('transactions.update');
+        Route::get("send/{user_id}", [WalletController::class, "send"])->name("send.transactions");
     });
     Route::group(["prefix" => "notifications"], function () {
         Route::get("/", [NotificationController::class, "index"])->name("notifications.index");

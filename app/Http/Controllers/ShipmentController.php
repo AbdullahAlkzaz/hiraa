@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportShipment;
 use App\Http\Requests\CreateShipmentRequest;
 use App\Http\Requests\UpdateShipmentRequest;
 use App\Models\Coupon;
@@ -17,6 +18,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ShipmentController extends Controller
 {
@@ -111,6 +113,7 @@ class ShipmentController extends Controller
                 $message = "تم انشاء الشحنة بكود الخصم";
             }
             session()->flash('message', $message);
+            return Excel::download(new ExportShipment, 'shipment.xlsx');
             if ($request->confirm_flag == 1) {
                 return back();
             } else {
@@ -256,10 +259,11 @@ class ShipmentController extends Controller
                         "type" => "credit",
                         "operation_id" => $shipment->id,
                         "operation_type" => "شحنة",
+                        "show" => 0,
                         "wallet_id" => $client_wallet->id,
                         "description" => "المبلغ المرسل مع الشحنة",
                     ];
-                    $transaction = $this->transactionModel->setTransaction($transaction_data);
+                    $this->transactionModel->setTransaction($transaction_data);
 
                 }
             }
@@ -274,7 +278,7 @@ class ShipmentController extends Controller
                         "wallet_id" => $admin_wallet->id,
                         "description" => "ثمن الشحن مستحق لبوينت",
                     ];
-                    $transaction = $this->transactionModel->setTransaction($transaction_data);
+                    $this->transactionModel->setTransaction($transaction_data);
 
                 }
             }
@@ -288,7 +292,7 @@ class ShipmentController extends Controller
                     "wallet_id" => $user_wallet->id,
                     "description" => "المبلغ المرسل للعميل",
                 ];
-                $transaction = $this->transactionModel->setTransaction($transaction_data);
+                $this->transactionModel->setTransaction($transaction_data);
             }
             $client_notification_data = [
                 "user_id" => $client->id,
