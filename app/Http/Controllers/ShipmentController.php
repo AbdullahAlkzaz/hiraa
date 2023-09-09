@@ -92,7 +92,7 @@ class ShipmentController extends Controller
             $code_flag = false;
             if($request->coupon_code && $request->coupon_code !=""){
                 $code = $this->couponModel->where("code", $request->coupon_code)->first();
-                if((int)$code->usages > 0 ){
+                if((int)$code?->usages > 0 ){
                     $code->usages = $code->usages - 1;
                     $code->update();
                     $code_flag = true;
