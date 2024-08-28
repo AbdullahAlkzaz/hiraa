@@ -31,7 +31,7 @@ data-asset-path="{{ asset('/')}}">
         <div class="content-wrapper">
           <div class="content-body">
             {{-- Include Page Content --}}
-            @yield('content')
+            {{-- @yield('content') --}}
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ data-asset-path="{{ asset('/')}}">
       <div class="content-body">
 
         {{-- Include Page Content --}}
-        @yield('content')
+        {{-- @yield('content') --}}
 
       </div>
     </div>

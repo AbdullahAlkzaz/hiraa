@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Price;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreatePriceRequest extends FormRequest
+class StoreSectionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,12 +28,10 @@ class CreatePriceRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'coupon' => 'nullable|numeric|min:0',
-            'discount_type' => 'nullable|string|in:percentage,fixed',
-            'coupon_time' => 'nullable|integer|min:0',
-            'features' => 'nullable|array',
-            'features.*' => 'string|max:255',
+            'media_type' => 'required|in:image,video',
+            'image' => 'required_if:media_type,image|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'video_link' => 'required_if:media_type,video|nullable|url',
+            'description' => 'required|string',
         ];
     }
 }

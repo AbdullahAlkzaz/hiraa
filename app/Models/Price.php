@@ -8,7 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Price extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'price',
+        'coupon',
+        'coupon_time',
+        'features'
+    ];
 
-    const SIZES = ['صغير', "متوسط", "كبير", "مستند"];
+    public function getFeaturesAttribute($value)
+    {
+        return json_decode($value, true);
+    }
 }

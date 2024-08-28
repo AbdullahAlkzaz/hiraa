@@ -13,6 +13,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use App\Http\Middleware\Authentication;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\SectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,14 +86,13 @@ Route::middleware([Authentication::class])->group(function () {
         Route::post("select/shipment/representative", [ShipmentController::class, "assignRepresentative"])->name('shipments.assignRepresentative');
         Route::post("select/shipment/company", [ShipmentController::class, "assignCompany"])->name('shipments.assignCompany');
         Route::post("select/shipment/office", [ShipmentController::class, "assignOffice"])->name('shipments.assignCompany');
-        
     });
     Route::group(["prefix" => "prices"], function () {
         Route::get("/", [PriceController::class, "index"])->name("prices.index");
         Route::delete("delete/{id}", [PriceController::class, "delete"])->name("prices.destroy");
         Route::get("create/", [PriceController::class, "create"])->name("prices.create");
-        Route::post("store/", [PriceController::class, "store"])->name("prices.store");
-        Route::get("show/{id}", [PriceController::class, "show"])->name("prices.show");
+        Route::post("/", [PriceController::class, "store"])->name("prices.store");
+        Route::get("edit/{id}", [PriceController::class, "edit"])->name("prices.edit");
         Route::put("update", [PriceController::class, "update"])->name('prices.update');
     });
     Route::group(["prefix" => "coupons"], function () {
@@ -121,7 +122,26 @@ Route::middleware([Authentication::class])->group(function () {
         Route::put("update", [WalletController::class, "update"])->name('transactions.update');
     });
 
-
+    Route::group(['prefix' => 'articles'], function () {
+        Route::get('/', [ArticleController::class, 'index'])->name('articles.articles');
+        Route::get('create', [ArticleController::class, 'create'])->name('articles.create');
+        Route::get('/{id}', [ArticleController::class, 'show'])->name('articles.show');
+        Route::post('/', [ArticleController::class, 'store'])->name('articles.store');
+        Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+        Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('articles.update');
+        Route::delete('/{id}', [ArticleController::class, 'delete'])->name('articles.delete');
+        Route::post('/articles/toggle-visibility/{id}', [ArticleController::class, 'toggleVisibility'])->name('articles.toggleVisibility');
+    });
+    Route::group(['prefix' => 'sections'], function () {
+        Route::get('/', [SectionController::class, 'index'])->name('sections.sections');
+        Route::get('section', [SectionController::class, 'create'])->name('sections.create');
+        Route::get('/{id}', [SectionController::class, 'show'])->name('sections.show');
+        Route::post('/', [SectionController::class, 'store'])->name('sections.store');
+        Route::get('/sections/{article}/edit', [SectionController::class, 'edit'])->name('sections.edit');
+        Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
+        Route::delete('/sections/{id}', [SectionController::class, 'delete'])->name('sections.delete');
+        Route::post('/sections/toggle-visibility/{id}', [SectionController::class, 'toggleVisibility'])->name('sections.toggleVisibility');
+    });
 });
 Route::get("/", [HomeController::class, "index"]);
 

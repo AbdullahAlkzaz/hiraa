@@ -61,20 +61,24 @@
                                 <input type="password" class="form-control form-control-merge" id="login-password"
                                     name="password" tabindex="2"
                                     placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                    aria-describedby="login-password" />
+                                    aria-describedby="login-password"
+                                    style="padding-left: 1rem; border-left: 1px #d8d6de solid; border-right: none;" />
                                 <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                             </div>
                         </div>
                         <div class="mb-1">
                             <div class="form-check d-flex">
-                                <input class="form-check-input" type="checkbox" id="remember" name="remember"
-                                    tabindex="3" {{ old('remember') ? 'checked' : '' }} />
-                                <label class="form-check-label" for="remember">{{ __('تذكرني') }}</label>
+                                <div class="input-group nput-group-merge">
+                                    <input class="form-check-input" type="checkbox" id="remember" name="remember"
+                                        tabindex="3" {{ old('remember') ? 'checked' : '' }} />
+                                    <label class="form-check-label" for="remember">{{ __('تذكرني') }}</label>
+                                </div>
                                 <div class="ms-auto">
                                     <a href="{{ route('signUp') }}">
                                         {{ __('تسجيل حساب جديد') }}
                                     </a>
                                 </div>
+
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100"

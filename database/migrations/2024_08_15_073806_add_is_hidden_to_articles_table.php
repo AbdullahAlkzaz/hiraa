@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('coupons', function (Blueprint $table) {
-            $table->id();
-            $table->string("code");
-            $table->double("percentage");
-            $table->integer("usages")->default(0);
-            $table->timestamps();
+        Schema::table('articles', function (Blueprint $table) {
+            $table->boolean('is_hidden')->default(false);
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coupons');
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropColumn('is_hidden');
+        });
     }
 };

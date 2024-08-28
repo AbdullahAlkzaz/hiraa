@@ -53,7 +53,7 @@ class UserAuthenticationController extends Controller
             session()->flash("message", __("خطأ في البريد الألكتروني أو كلمة المرور"));
             return back();
         }
-        return redirect("dashboard");
+        return redirect("articles");
     }
 
     public function signUp()
