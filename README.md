@@ -7,3 +7,4 @@
 4) Run the command `composer update`
 5) Run the command `php artisan key:generate`
 6) Run the command `php artisan migrate --seed`
+# hiraa
