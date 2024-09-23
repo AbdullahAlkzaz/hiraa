@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('prices', function (Blueprint $table) {
-            $table->string("from_government")->nullable();
-            $table->string("from_area")->nullable();
+        Schema::table('courses', function (Blueprint $table) {
+            $table->boolean('is_hidden')->default(false);
         });
     }
 
@@ -26,9 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('prices', function (Blueprint $table) {
-            $table->dropColumn("from_government");
-            $table->dropColumn("from_area");
+        Schema::table('courses', function (Blueprint $table) {
+            $table->dropColumn('is_hidden'); // إزالة العمود عند التراجع عن الهجرة
         });
     }
 };

@@ -7,15 +7,18 @@ use App\Http\Requests\CreateArticleRequest;
 use App\Models\Article;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Services\ContactMethodService;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
+    protected $contactMethodService;
     private Article $articleModel;
-    public function __construct(Article $articleModel)
+    public function __construct(Article $articleModel, ContactMethodService $contactMethodService)
     {
         $this->articleModel = $articleModel;
+        $this->contactMethodService = $contactMethodService;
     }
     public function index(Request $request)
     {
@@ -23,8 +26,8 @@ class ArticleController extends Controller
             if (isset($request->name)) {
                 $query->where("name", $request->neme);
             }
-        })->paginate(20);
-        return view('hiraa.articles.articles')->with([
+        })->paginate(10);
+        return view('hiraa.articles.articles')->with([  
             'articles' => $articales,
         ]);
     }
@@ -52,7 +55,11 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::findOrFail($id);
-        return view('hiraa.articles.article_show', compact('article'));
+        $contactIcons = $this->contactMethodService->getContactMethods();
+        return view('hiraa.articles.show')->with([
+            'article' => $article,
+            'contactIcons' => $contactIcons,
+        ]);
     }
 
     public function edit(Article $article)
@@ -87,7 +94,6 @@ class ArticleController extends Controller
             return back()->with('error', $exception->getMessage());
         }
     }
-
 
     public function delete($id)
     {

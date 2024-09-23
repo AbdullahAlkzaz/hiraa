@@ -22,9 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(ContactMethodService::class, function ($app) {
+            return new ContactMethodService();
+        });
     }
-
+    
     /**
      * Bootstrap any application services.
      *
@@ -35,28 +37,28 @@ class AppServiceProvider extends ServiceProvider
         //roles directives
         Blade::directive('role', function ($slug) {
             return "<?php if(Auth::user()->hasRole('admin') || Auth::user()->hasPermission($slug)){ ?>";
-        });
-        Blade::directive('endrole', function ($slug) {
-            return "<?php } ?>";
-        });
-        //permission directives
-        Blade::directive('permission', function ($slug) {
-            return "<?php if(Auth::user()->hasPermission($slug)){ ?>";
-        });
-        Blade::directive('endpermission', function ($slug) {
-            return "<?php } ?>";
-        });
-        Blade::directive('elserole', function ($slug) {
-            return "<?php }else{ ?>";
-        });
+});
+Blade::directive('endrole', function ($slug) {
+return "<?php } ?>";
+});
+//permission directives
+Blade::directive('permission', function ($slug) {
+return "<?php if(Auth::user()->hasPermission($slug)){ ?>";
+});
+Blade::directive('endpermission', function ($slug) {
+return "<?php } ?>";
+});
+Blade::directive('elserole', function ($slug) {
+return "<?php }else{ ?>";
+});
 
-        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(ShipmentRepositoryInterface::class, ShipmentRepository::class);
-        $this->app->bind(PermissionsRepositoryInterface::class, PermissionRepository::class);
-        Paginator::useBootstrap();
+$this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+$this->app->bind(ShipmentRepositoryInterface::class, ShipmentRepository::class);
+$this->app->bind(PermissionsRepositoryInterface::class, PermissionRepository::class);
+Paginator::useBootstrap();
 
-        if (config('app.env') === 'production') {
-            URL::forceScheme('https');
+if (config('app.env') === 'production') {
+URL::forceScheme('https');
 }
-    }
+}
 }

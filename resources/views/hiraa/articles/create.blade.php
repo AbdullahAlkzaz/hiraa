@@ -1,171 +1,173 @@
-@extends('layouts.appHiraa')
+@extends('layouts.app')
+@section('title', 'New Articles')
 
 @section('content')
-    <style>
-        .file-drop-area {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* تأكد من أن النص يكون في الوسط */
-            width: 100%;
-            max-width: 100%;
-            padding: 25px;
-            border: 2px dashed #007bff;
-            border-radius: 5px;
-            background-color: #f8f9fa;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .file-drop-area.is-active {
-            background-color: #e9ecef;
-        }
-
-        .file-drop-area input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            /* تأكد من أن الإنبوت غير مرئي ولكنه يغطي كامل المنطقة */
-            cursor: pointer;
-            z-index: 10;
-            /* تأكد من أن الإنبوت فوق جميع العناصر الأخرى */
-        }
-
-        .file-drop-area .choose-file {
-            font-size: 16px;
-            color: #007bff;
-            z-index: 1;
-            /* اجعل النص فوق الخلفية */
-        }
-    </style>
-    
-    <div class="container">
-        <h1>Create Article</h1>
+<div class="container">
+    <div class="card mb-3">
+        <!-- بدء الفورم -->
         <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" class="form-control" value="{{ old('title') }}" required>
-                @error('title')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+            <!-- صورة المعاينة هنا -->
+            <div id="file-drop-area" class="file-drop-area">
+                <span class="choose-file">Drag & Drop your file here or click to browse</span>
+                <input type="file" id="image" name="image" style="display: none;">
+                <img id="image-preview" style="display: none;" />
             </div>
-            <div class="form-group">
-                <label for="image">Image</label>
-                <div class="file-drop-area" id="file-drop-area">
-                    <span class="choose-file">Drag & Drop your file here or click to browse</span>
-                    <input type="file" id="image" name="image" class="form-control-file" style="display: none;">
+
+            @error('image')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+
+            <div class="card-body">
+                <!-- حقل العنوان -->
+                <div class="form-group">
+                    <h5 class="card-title">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" style="height:3rem; width: 100%;" name="title"
+                            class="form-control" value="{{ old('title') }}" required>
+                    </h5>
+                    @error('title')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
-                @error('image')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+
+                <!-- حقل النص (Body) -->
+                <div class="form-group">
+                    <label for="body">Body</label>
+                    <p class="card-text">
+                        <textarea id="body" name="body"
+                            class="form-control editor">{{ old('body') }}</textarea>
+                    </p>
+                    @error('body')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- زر الحفظ -->
+                <button type="submit" class="btn btn-primary">Save</button>
             </div>
-            <div class="form-group">
-                <label for="body">Body</label>
-                <textarea id="body" name="body" class="form-control editor">{{ old('body') }}</textarea>
-                @error('body')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
         </form>
+        <!-- نهاية الفورم -->
     </div>
+</div>
 @endsection
 
 @section('page-script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-    <script>
-        tinymce.init({
-            selector: "#body",
-            height: 500,
-            menubar: true, // عرض شريط القوائم الكامل
-            plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table paste code help wordcount",
-                "textcolor",
-                "fontselect",
-                "emoticons",
-                "fullscreen",
-                "hr",
-                "imagetools",
-                "importcss",
-                "nonbreaking",
-                "pagebreak",
-                "save",
-                "tabfocus",
-                "template",
-                "visualblocks",
-                "visualchars",
-                "wordcount",
-                "advtable",
-                "quickbars",
-                "contextmenu",
-                "autosave"
-            ],
-            toolbar: "undo redo | styleselect | bold italic underline strikethrough | " +
-                "forecolor backcolor | alignleft aligncenter alignright alignjustify | " +
-                "bullist numlist outdent indent | removeformat | fontselect fontsizeselect | " +
-                "link image media | print preview fullscreen | code help",
-            toolbar_mode: 'floating',
-            quickbars_insert_toolbar: 'quicktable image media codesample',
-            quickbars_selection_toolbar: 'bold italic underline strikethrough | h2 h3 blockquote | ' +
-                'alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link',
-            content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-            setup: function(editor) {
-                editor.on('change', function() {
-                    editor.save();
-                });
+<!-- BEGIN: Page Vendor JS -->
+<script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
+<!-- END: Page Vendor JS -->
+<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+<script>
+    tinymce.init({
+        selector: "#body",
+        height: 500,
+        menubar: true,
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table paste code help wordcount",
+            "textcolor",
+            "fontselect",
+            "emoticons",
+            "fullscreen",
+            "hr",
+            "imagetools",
+            "importcss",
+            "nonbreaking",
+            "pagebreak",
+            "save",
+            "tabfocus",
+            "template",
+            "visualblocks",
+            "visualchars",
+            "wordcount",
+            "advtable",
+            "quickbars",
+            "contextmenu",
+            "autosave"
+        ],
+        toolbar: "undo redo | styleselect | bold italic underline strikethrough | " +
+            "forecolor backcolor | alignleft aligncenter alignright alignjustify | " +
+            "bullist numlist outdent indent | removeformat | fontselect fontsizeselect | " +
+            "link image media | print preview fullscreen | code help",
+        toolbar_mode: 'floating',
+        quickbars_insert_toolbar: 'quicktable image media codesample',
+        quickbars_selection_toolbar: 'bold italic underline strikethrough | h2 h3 blockquote | ' +
+            'alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link',
+        content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+        setup: function (editor) {
+            editor.on('change', function () {
+                editor.save();
+            });
+        }
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        var $fileDropArea = $('#file-drop-area');
+        var $fileInput = $('#image');
+        var $imagePreview = $('#image-preview');
+        var $chooseFileText = $('.choose-file'); // الوصول إلى الـ span
+
+        // عند سحب الملفات فوق منطقة السحب والإفلات
+        $fileDropArea.on('dragover', function (event) {
+            event.preventDefault();
+            $fileDropArea.addClass('is-active');
+        });
+
+        // عند سحب الملفات خارج منطقة السحب والإفلات
+        $fileDropArea.on('dragleave', function () {
+            $fileDropArea.removeClass('is-active');
+        });
+
+        // عند إفلات الملفات في منطقة السحب والإفلات
+        $fileDropArea.on('drop', function (event) {
+            event.preventDefault();
+            $fileDropArea.removeClass('is-active');
+            $fileInput.prop('files', event.originalEvent.dataTransfer.files);
+
+            if ($fileInput[0].files.length > 0) {
+                var file = $fileInput[0].files[0];
+                var fileName = file.name;
+                $chooseFileText.text(fileName);
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $imagePreview.attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(file);
             }
         });
-    </script>
 
-    <script>
-        $(document).ready(function() {
-            var $fileDropArea = $('#file-drop-area');
-            var $fileInput = $('#image');
-
-            // عندما يتم سحب الملفات فوق منطقة السحب والإفلات
-            $fileDropArea.on('dragover', function(event) {
-                event.preventDefault();
-                $fileDropArea.addClass('is-active');
-            });
-
-            // عندما يتم سحب الملفات خارج منطقة السحب والإفلات
-            $fileDropArea.on('dragleave', function() {
-                $fileDropArea.removeClass('is-active');
-            });
-
-            // عندما يتم إفلات الملفات في منطقة السحب والإفلات
-            $fileDropArea.on('drop', function(event) {
-                event.preventDefault();
-                $fileDropArea.removeClass('is-active');
-                $fileInput.prop('files', event.originalEvent.dataTransfer.files);
-
-                // عرض اسم الملف الذي تم رفعه
-                if ($fileInput[0].files.length > 0) {
-                    var fileName = $fileInput[0].files[0].name;
-                    $fileDropArea.find('.choose-file').text(fileName);
-                }
-            });
-
-            // عندما يتم النقر على منطقة السحب والإفلات، افتح مستعرض الملفات
-            $fileDropArea.on('click', function() {
-                $fileInput.click();
-            });
-
-            // عندما يتم اختيار ملف من مستعرض الملفات
-            $fileInput.on('change', function() {
-                if ($fileInput[0].files.length > 0) {
-                    var fileName = $fileInput[0].files[0].name;
-                    $fileDropArea.find('.choose-file').text(fileName);
-                }
-            });
+        // عند النقر على منطقة السحب والإفلات أو النص "choose-file"
+        $fileDropArea.on('click', function (event) {
+            event.preventDefault(); // منع التصرف الافتراضي
+            $fileInput.click();
         });
-    </script>
+
+        // عند النقر على النص "choose-file"
+        $chooseFileText.on('click', function (event) {
+            event.preventDefault(); // منع التصرف الافتراضي
+            $fileInput.click();
+        });
+
+        // عند اختيار ملف من مستعرض الملفات
+        $fileInput.on('change', function () {
+            if ($fileInput[0].files.length > 0) {
+                var file = $fileInput[0].files[0];
+                var fileName = file.name;
+                $chooseFileText.text(fileName);
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $imagePreview.attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+</script>
 @endsection

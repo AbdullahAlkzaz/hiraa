@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prices', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->decimal('price', 10, 2);
-            $table->string('coupon')->nullable();
-            $table->unsignedInteger('coupon_time')->nullable();
-            $table->text('features');
-            $table->timestamps();
-            $table->index(['title']);
-        });
+        if (!Schema::hasTable('prices')) {
+            Schema::create('prices', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->decimal('price', 10, 2);
+                $table->string('coupon')->nullable();
+                $table->unsignedInteger('coupon_time')->nullable();
+                $table->text('features');
+                $table->timestamps();
+            });
+        }
     }
+
 
     /**
      * Reverse the migrations.

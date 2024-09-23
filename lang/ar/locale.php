@@ -226,7 +226,13 @@ return [
     'Shipping Types' => 'Shipping Types',
     'Tameed Orders' => 'Tameed Orders',
     'Customer Support' => 'Customer Support',
-    'dashboard' => "لوحة التحكم",
+    'Articles' => "Articles",
+    "Sections" => "Sections",
+    'Prices' => "Prices",
+    'Courses' => "Courses",
+    'dashboard' => "dashboard",
+    'Contact Us' => "Contact Us",
+    'About Us' => "About Us",
     "المستخدمين" => "المستخدمين",
     "الشركات" => "الشركات",
     "المكاتب" => "المكاتب",
@@ -234,5 +240,4 @@ return [
     "الأسعار" => "الأسعار",
     "المحفظة" => "المحفظة",
     "أكواد الخصم" => "أكواد الخصم",
-    
 ];

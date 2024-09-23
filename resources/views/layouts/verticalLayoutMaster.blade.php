@@ -1,5 +1,5 @@
 <body
-    class="vertical-layout vertical-menu-modern {{ $configData['verticalMenuNavbarType'] }} {{ $configData['blankPageClass'] }} {{ $configData['bodyClass'] }} {{ $configData['sidebarClass'] }} {{ $configData['footerType'] }} {{ $configData['contentLayout'] }}"
+    class="vertical-layout vertical-dashboard vertical-menu-modern {{ $configData['verticalMenuNavbarType'] }} {{ $configData['blankPageClass'] }} {{ $configData['bodyClass'] }} {{ $configData['sidebarClass'] }} {{ $configData['footerType'] }} {{ $configData['contentLayout'] }}"
     data-open="click" data-menu="vertical-menu-modern"
     data-col="{{ $configData['showMenu'] ? $configData['contentLayout'] : '1-column' }}" data-framework="laravel"
     data-asset-path="{{ asset('/') }}">
@@ -19,10 +19,10 @@
             padding-top: 9%;
         } */
     </style>
-    <div class="app-content content {{ $configData['pageClass'] }}">
+    <div class="app-content dashboard content {{ $configData['pageClass'] }}">
         <!-- BEGIN: Header-->
         <div class="content-overlay"></div>
-        <div class="header-navbar-shadow"></div>
+        
         @if ($configData['contentLayout'] !== 'default' && isset($configData['contentLayout']))
             <div class="content-area-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container-xxl p-0' : '' }}">
                 <div class="{{ $configData['sidebarPositionClass'] }}">
@@ -79,7 +79,7 @@
         <script>
             $(".purchase_orders_badge").text({{ Session::get('purchase_orders_badge') }});
         </script>
-    @endif\
+    @endif
     @if (Session::has('offers_badge'))
         <script>
             $(".offers_badge").text({{ Session::get('offers_badge') }});

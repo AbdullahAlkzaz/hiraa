@@ -18,7 +18,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="haniusif">
-    <title>@yield('title') - {{ __('Dashboard') }}</title>
+    <title>@yield('title') - {{ __('Hiraa') }}</title>
     <link rel="apple-touch-icon" href="{{ asset('images/ico/favicon-32x32.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo/favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">

@@ -1,24 +1,45 @@
+# Node modules
 /node_modules
+
+# Public assets except CSS
 /public/hot
 /public/data
 /public/fonts
 /public/images
 /public/storage
 /public/js
-/public/css
 /public/css-rtl
 /public/vendors
+
+# Storage
 /storage/*.key
+
+# Vendor directory
 /vendor
-.env
+
+# Environment files
 .env.backup
+
+# PHPUnit result cache
 .phpunit.result.cache
+
+# Homestead configuration
 Homestead.json
 Homestead.yaml
+
+# NPM and Yarn logs
 npm-debug.log
 yarn-error.log
+
+# Vuexy shell scripts
 /vuexy-shell-scripts
+
+# Supervisord logs
 supervisord.log
 supervisord.pid
+
+# IDE files
 .idea
+
+# macOS specific files
 .DS_Store

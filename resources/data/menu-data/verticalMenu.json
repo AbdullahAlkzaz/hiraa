@@ -4,54 +4,50 @@
             "name": "dashboard",
             "url": "dashboard",
             "icon": "home",
-            "slug": "dashboard"
-        },
-        {
-            "name": "المستخدمين",
-            "url": "users",
-            "icon": "users",
-            "slug": "users"
-        },
-        {
-            "name": "الشركات",
-            "url": "companies",
-            "icon": "briefcase",
-            "slug": "companies",
+            "slug": "dashboard",
             "role": "admin"
-            
         },
         {
-            "name": "المكاتب",
-            "url": "offices",
-            "icon": "briefcase",
-            "slug": "offices"
+            "name": "Articles",
+            "url": "articles",
+            "icon": "file-text",
+            "slug": "articles",
+            "role": "admin"
+        },
+        {
+            "name": "Sections",
+            "url": "sections",
+            "icon": "tablet",
+            "slug": "sections",
+            "role": "admin"
         },
         {
             "url": "prices",
-            "name": "الأسعار",
+            "name": "Prices",
             "icon": "dollar-sign",
             "slug": "prices",
             "role": "admin"
         },
         {
-            "url": "coupons",
-            "name": "أكواد الخصم",
-            "icon": "percent",
-            "slug": "coupons",
+            "url": "about",
+            "name": "About Us",
+            "icon": "info",
+            "slug": "about",
             "role": "admin"
         },
         {
-            "url": "shipments",
-            "name": "الشحنات",
-            "icon": "truck",
-            "slug": "shipments"
+            "url": "courses",
+            "name": "Courses",
+            "icon": "book-open",
+            "slug": "courses",
+            "role": "admin"
         },
         {
-            "url": "transactions",
-            "name": "المحفظة",
-            "icon": "dollar-sign",
-            "slug": "wallet"
+            "url": "contact",
+            "name": "Contact Us",
+            "icon": "phone-call",
+            "slug": "contact",
+            "role": "admin"
         }
-        
     ]
 }

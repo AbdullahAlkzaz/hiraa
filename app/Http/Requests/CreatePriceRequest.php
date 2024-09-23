@@ -28,13 +28,13 @@ class CreatePriceRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'coupon' => 'nullable|numeric|min:0',
-            'discount_type' => 'nullable|string|in:percentage,fixed',
-            'coupon_time' => 'nullable|integer|min:0',
-            'features' => 'nullable|array',
-            'features.*' => 'string|max:255',
+            'discount_type' => 'required|in:percentage,fixed', // التحقق من نوع الخصم
+            'coupon_time' => 'nullable|numeric|min:0',
+            'features' => 'required|array',
+            'lecture_duration' => 'required|integer|in:30,45,60',
+            'sessions_per_week' => 'required|integer|min:1',
         ];
     }
 }

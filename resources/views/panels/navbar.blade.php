@@ -18,6 +18,8 @@
             class="header-navbar navbar navbar-expand-lg align-items-center {{ $configData['navbarClass'] }} navbar-light navbar-shadow {{ $configData['navbarColor'] }} {{ $configData['layoutWidth'] === 'boxed' && $configData['verticalMenuNavbarType'] === 'navbar-floating' ? 'container-xxl' : '' }}">
 @endif
 <div class="navbar-container d-flex content">
+    <h2 class="content-header-title center" style=" color:#fff;padding:0 1rem; border-right: 1px solid #fff;">@yield('title')</h2>
+        
     <!--div class="bookmark-wrapper d-flex align-items-center">
     <ul class="nav navbar-nav d-xl-none">
       <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon"
@@ -56,7 +58,7 @@
         <i class="d-block d-xl-none text-primary toggle-icon font-medium-4 fa ficon" data-feather="list"></i>
     </a>
     <ul class="nav navbar-nav align-items-center ms-auto">
-        <li class="nav-item dropdown dropdown-language">
+        <!-- <li class="nav-item dropdown dropdown-language">
             <a class="nav-link dropdown-toggle" id="dropdown-flag" href="#" data-bs-toggle="dropdown"
                 aria-haspopup="true">
                 <i class="flag-icon flag-icon-us"></i>
@@ -72,8 +74,8 @@
 
             </div>
             </li-->
-        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon"
-                    data-feather="{{ $configData['theme'] === 'dark' ? 'sun' : 'moon' }}"></i></a></li>
+        <!-- <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon"
+                    data-feather="{{ $configData['theme'] === 'dark' ? 'sun' : 'moon' }}"></i></a></li> -->
         <!--li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon"
           data-feather="search"></i></a>
       <div class="search-input">
@@ -194,7 +196,8 @@
         </li>
       </ul>
     </li-->
-        <li class="nav-item dropdown dropdown-notification me-25" dir="RTL">
+    
+        <!-- <li class="nav-item dropdown dropdown-notification me-25" dir="RTL">
             <a class="nav-link" href="javascript:void(0);" onclick="getNotifications()" data-bs-toggle="dropdown">
                 <i class="ficon" data-feather="bell"></i>
                 <span
@@ -212,7 +215,7 @@
                     <a class="btn btn-primary w-100" href="javascript:void(0)">قراءة كل الاشعارات</a>
                 </li>
             </ul>
-        </li>
+        </li> -->
         <li class="nav-item dropdown dropdown-user">
             <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);"
                 data-bs-toggle="dropdown" aria-haspopup="true">
@@ -295,7 +298,6 @@
             </div>
         </li>
     </ul>
-
 </div>
 </nav>
 

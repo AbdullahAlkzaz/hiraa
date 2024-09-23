@@ -28,13 +28,13 @@ class UpdatePriceRequest extends FormRequest
     public function rules()
     {
         return [
-            "id" => "required|integer|exists:prices,id",
-            "government" => "required|string|min:2",
-            "from_government" => "required|string|min:2",
-            "area" => "required|string|min:2",
-            "from_area" => "required|string|min:2",
-            "price" => "required|numeric|min:1",
-            "size" => "required|string|in:". implode(",", Price::SIZES),
+            'price' => 'required|numeric|min:0',
+            'coupon' => 'nullable|numeric|min:0',
+            'discount_type' => 'required|in:percentage,fixed', // التحقق من نوع الخصم
+            'coupon_time' => 'nullable|numeric|min:0',
+            'features' => 'required|array',
+            'lecture_duration' => 'required|integer|in:30,45,60',
+            'sessions_per_week' => 'required|integer|min:1',
         ];
     }
 }

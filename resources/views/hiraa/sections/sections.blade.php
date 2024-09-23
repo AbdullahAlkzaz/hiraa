@@ -1,110 +1,116 @@
-@extends('layouts.appHiraa')
+@extends('layouts.app')
+@section('title', 'Sections')
+
 
 @push('style')
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+    <link rel="stylesheet"
+        href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
 @endpush
 
 @section('content')
-    <style>
-        .hidden-section {
-            background-color: #f8d7da;
-        }
-    </style>
+<style>
+    .hidden-section {
+        background-color: #f8d7da;
+    }
+
+</style>
 
 
-    <div class="container">
-        <h1>Section</h1>
-        <a href="{{ route('sections.create') }}" class="btn btn-primary">Add New Section</a>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Image</th>
-                    <th>Body</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($sections as $section)
-                    <tr ondblclick="window.location.href='{{ route('sections.show', $section->id) }}'"
-                        data-section-id="{{ $section->id }}" class="{{ $section->is_hidden ? 'hidden-section' : '' }}">
-                        <td>{{ $section->title }}</td>
-                        <td>
-                            @if ($section->video_link)
-                                @php
-                                    $videoId = '';
-                                    if (strpos($section->video_link, 'youtube.com') !== false) {
-                                        parse_str(parse_url($section->video_link, PHP_URL_QUERY), $query);
-                                        $videoId = $query['v'] ?? '';
-                                    } elseif (strpos($section->video_link, 'youtu.be') !== false) {
-                                        $videoId = basename($section->video_link);
-                                    }
-                                    $thumbnailUrl = $videoId
-                                        ? "https://img.youtube.com/vi/{$videoId}/hqdefault.jpg"
-                                        : '';
-                                @endphp
-                                @if ($thumbnailUrl)
-                                    <img src="{{ $thumbnailUrl }}" alt="{{ $section->title }}" width="100">
-                                @else
-                                    <p>No thumbnail available</p>
-                                @endif
-                            @elseif ($section->image)
-                                <img src="{{ asset('storage/' . $section->image) }}" alt="{{ $section->title }}"
-                                    width="100">
+<div class="container">
+    <a href="{{ route('sections.create') }}" class="btn floating-btn">
+        <i class="fas fa-plus"></i>
+    </a>
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Image</th>
+                <th>Body</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($sections as $section)
+                <tr ondblclick="window.location.href='{{ route('sections.show', $section->id) }}'"
+                    data-section-id="{{ $section->id }}"
+                    class="{{ $section->is_hidden ? 'hidden-section' : '' }}">
+                    <td>{{ $section->title }}</td>
+                    <td>
+                        @if($section->video_link)
+                            @php
+                                $videoId = '';
+                                if (strpos($section->video_link, 'youtube.com') !== false) {
+                                parse_str(parse_url($section->video_link, PHP_URL_QUERY), $query);
+                                $videoId = $query['v'] ?? '';
+                                } elseif (strpos($section->video_link, 'youtu.be') !== false) {
+                                $videoId = basename($section->video_link);
+                                }
+                                $thumbnailUrl = $videoId
+                                ? "https://img.youtube.com/vi/{$videoId}/hqdefault.jpg"
+                                : '';
+                            @endphp
+                            @if($thumbnailUrl)
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $section->title }}" width="100">
+                            @else
+                                <p>No thumbnail available</p>
                             @endif
-                        </td>
+                        @elseif($section->image)
+                            <img src="{{ asset('storage/' . $section->image) }}"
+                                alt="{{ $section->title }}" width="100">
+                        @endif
+                    </td>
 
-                        <td>{{ strip_tags(substr($section->description, 0, 100)) }}...</td>
-                        <td>
-                            <div class="dropdown">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
-                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown link
+                    <td>{{ strip_tags(substr($section->description, 0, 100)) }}...</td>
+                    <td>
+                        <div class="dropdown">
+                            <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li>
+                                    <a class="dropdown-item"
+                                        href="{{ route('sections.edit', $section->id) }}">
+                                        <i data-feather="edit"></i> Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="dropdown-item" onclick="confirmDelete({{ $section->id }})">
+                                        <i data-feather="delete"></i> Delete
+                                    </a>
+                                    <form id="delete-form-{{ $section->id }}"
+                                        action="{{ route('sections.delete', $section->id) }}"
+                                        method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </li>
+                                {{-- <li>
+                                        <a class="dropdown-item" href="#"
+                                            onclick="toggleVisibility({{ $section->id }},
+                                '{{ route('sections.show', $section->id) }}')">
+                                <i data-feather="eye" id="icon-{{ $section->id }}"></i> <span
+                                    id="view-text-{{ $section->id }}">View</span>
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('sections.edit', $section->id) }}">
-                                            <i data-feather="edit"></i> Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="dropdown-item"
-                                            onclick="confirmDelete({{ $section->id }})">
-                                            <i data-feather="delete"></i> Delete
-                                        </a>
-                                        <form id="delete-form-{{ $section->id }}"
-                                            action="{{ route('sections.delete', $section->id) }}" method="POST"
-                                            style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </li>
-                                    {{-- <li>
-                                        <a class="dropdown-item" href="#"
-                                            onclick="toggleVisibility({{ $section->id }}, '{{ route('sections.show', $section->id) }}')">
-                                            <i data-feather="eye" id="icon-{{ $section->id }}"></i> <span
-                                                id="view-text-{{ $section->id }}">View</span>
-                                        </a>
-                                    </li> --}}
+                                </li> --}}
 
-                                    <li>
-                                        <a class="dropdown-item" href="#"
-                                            onclick="shareSection('{{ route('sections.show', $section->id) }}')">
-                                            <i data-feather="share-2"></i> Share
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                        onclick="shareSection('{{ route('sections.show', $section->id) }}')">
+                                        <i data-feather="share-2"></i> Share
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+@stop
 
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-@endsection
-
-@section('page-script')
+    @section('page-script')
     <!-- BEGIN: Page Vendor JS-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
     <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
@@ -116,17 +122,18 @@
                 document.getElementById('delete-form-' + sectionId).submit();
             }
         }
+
     </script>
 
     <script>
         function confirmDelete(sectionId) {
             Swal.fire({
-                title: "{{ __('هل أنت متأكد؟') }}",
-                text: "{{ __('ستقوم بحذف المقالة!') }}",
+                title: "Are you sure?",
+                text: "You are about to delete this item!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: "{{ __('نعم، احذفها!') }}",
-                cancelButtonText: "{{ __('إلغاء') }}",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel",
                 buttonsStyling: false
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -163,6 +170,7 @@
             });
         }
 
+
         function shareSection(url) {
             if (navigator.share) {
                 navigator.share({
@@ -186,5 +194,6 @@
             document.execCommand('copy');
             tempInput.remove();
         }
+
     </script>
-@endsection
+    @endsection

@@ -1,0 +1,624 @@
+/* Animation Styles */
+.fade-in-right,
+.fade-in-left,
+.fade-in-up,
+.fade-in-bottom {
+    opacity: 0;
+    transition: all 1s ease-in-out;
+}
+
+.animated {
+    opacity: 1 !important;
+    transform: translate(0) !important;
+}
+
+/* Styles for dynamic disappearance */
+.fade-out-up {
+    transform: translateY(-100%) !important;
+}
+
+.fade-out-down {
+    transform: translateY(100%) !important;
+}
+
+/* General Styles */
+.title-home {
+    color: #2c3e50;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+/* Uncomment this if you want hover effect on images */
+/* .img-fluid:hover {
+    transform: scale(1.05);
+} */
+
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.feature-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.icon {
+    color: #0030a2;
+    margin-bottom: 15px;
+}
+
+.col-md-3 {
+    display: flex;
+    align-items: stretch;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 20px 0;
+}
+
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #d4d4d4;
+}
+
+/* Additional Styles */
+.wave-separator {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    background-size: cover;
+}
+
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Uncomment this if you want to adjust container position */
+/* .container {
+    position: relative;
+    z-index: 2;
+} */
+
+.modal-content .modal-body .btn-primary {
+    background-color: #007bff;
+    margin: 1rem;
+}
+
+.bg-dark {
+    background-color: #1a1a2e !important;
+}
+
+.text-light {
+    color: #f0f0f0 !important;
+}
+
+.btn-outline-light {
+    border-color: #f0f0f0;
+    color: #f0f0f0;
+}
+
+.btn-outline-light:hover {
+    background-color: #f0f0f0;
+    color: #1a1a2e;
+}
+
+/* Heading and motivational text */
+.text-center {
+    text-align: center;
+}
+
+.motivation-text {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+.decorative-line {
+    border-top: 2px solid #000;
+    margin: 20px auto;
+    width: 50%;
+}
+
+/* Article Info and Hover Effects */
+.article-info {
+    position: relative;
+    z-index: 1;
+    transition: background-color 0.7s ease;
+}
+
+.article-info::before {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 0;
+    height: 0;
+    background-color: #0066cc !important;
+    border-radius: 50%;
+    transition: width 0.5s ease, height 0.5s ease, bottom 0.5s ease, right 0.5s ease;
+    z-index: 9;
+}
+
+.card:hover .article-info::before {
+    width: 150px;
+    height: 150px;
+    bottom: 0;
+    right: 0;
+}
+
+.card:hover .article-info {
+    background-color: #0066cc;
+    color: #fff;
+}
+
+.card:hover .article-info .btn-primary {
+    background-color: #ff9f43 !important;
+    color: #ff9f43;
+    border: none !important;
+}
+
+.card:hover .article-info h5 {
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+/* Form Styles */
+.form-group .row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group .form-control,
+.form-group .file-drop-area {
+    width: 100%;
+}
+
+.file-drop-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 25px;
+    border: 2px dashed #007bff;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.file-drop-area.is-active {
+    background-color: #e9ecef;
+}
+
+.file-drop-area input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.file-drop-area .choose-file {
+    font-size: 16px;
+    color: #007bff;
+}
+
+.file-drop-area img {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    margin-top: 10px;
+    display: none;
+}
+
+/* Textarea Styles */
+textarea.form-control.editor {
+    width: 100%;
+}
+
+/* Animation Styles */
+.animated {
+    transition: transform 0.7s ease-out, opacity 0.7s ease-out;
+    opacity: 1;
+}
+
+.animate-from-left {
+    transform: translateX(-10%);
+    opacity: 0;
+}
+
+.animate-from-right {
+    transform: translateX(10%);
+    opacity: 0;
+}
+
+.animate-from-bottom {
+    transform: translateY(10%);
+    opacity: 0;
+}
+
+.animated.animate-from-left,
+.animated.animate-from-right,
+.animated.animate-from-bottom {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Share Link Styles */
+.share-link,
+.share-link:active {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: none !important;
+    background: none !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+}
+
+/* Button Primary Styles */
+.btn-primary i {
+    transition: transform 1s ease;
+    height: 2rem !important;
+    width: 2rem !important;
+}
+
+.btn-primary span {
+    display: none;
+    margin-left: 10px;
+    font-size: 1.5rem;
+    transition: opacity 1s ease;
+}
+
+.btn-primary:hover i {
+    animation: spin 1s linear forwards;
+}
+
+.btn-primary:hover span {
+    display: inline;
+    opacity: 1;
+}
+
+.btn-primary:not(:hover) i {
+    animation: spin-reverse 1s linear forwards;
+}
+
+.btn-primary:not(:hover) span {
+    display: none;
+    opacity: 0;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spin-reverse {
+    from {
+        transform: rotate(360deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+/* Form Container Styles */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Icons Group Styles */
+.icons-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.icon-item {
+    text-align: center;
+    margin: 2rem !important;
+}
+
+.icon-item i {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.icon-item input {
+    width: 15rem !important;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Specific Icon Colors */
+i.fa-phone {
+    color: #34b7f1;
+}
+
+i.fa-facebook {
+    color: #3b5998;
+}
+
+i.fa-whatsapp {
+    color: #25d366;
+}
+
+i.fa-telegram {
+    color: #0088cc;
+}
+
+/* Contact Card Styles */
+.contact-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.contact-body {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-icon {
+    font-size: 24px;
+    color: #333;
+}
+
+.contact-value {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+    min-width: 150px;
+}
+
+.dropdown-item {
+    font-size: 14px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.call-center-icon {
+    width: 80px;
+    height: 80px;
+    background-color: #ff9f43;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-size: 30px;
+    position: fixed;
+    bottom: 3rem;
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0 20px 0px rgb(84 131 181 / 42%);
+}
+
+.contact-icons {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    position: fixed;
+    bottom: 125px;
+    margin: 1rem;
+    z-index: 999;
+}
+
+.contact-icons a {
+    background-color: rgb(255, 255, 255);
+    color: #007bff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    margin: 1rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.25rem;
+    transition: transform 0.3s ease;
+    box-shadow: 0px 0 20px 0px rgb(84 131 181 / 42%);
+}
+
+/* إضافة ظل خفيف */
+
+/* ظل أكثر وضوحًا إذا كنت تريده */
+.contact-icons a:hover {
+    box-shadow: 0 6px 12px rgba(132, 176, 227, 0.3);
+    /* ظل أعمق عند التمرير */
+}
+
+.call-center-icon:hover {
+    background: #007bff;
+}
+
+/* Icon Colors (specific to platform) */
+.contact-icons a .fas.fa-envelope {
+    color: #ea4335;
+}
+
+.contact-icons a .fas.fa-phone {
+    color: #34b7f1;
+}
+
+.contact-icons a .fab.fa-facebook {
+    color: #4267B2;
+}
+
+.contact-icons a .fab.fa-whatsapp {
+    color: #25d366;
+}
+
+.contact-icons a .fab.fa-telegram {
+    color: #0088cc;
+}
+
+.floating-btn {
+    position: fixed;
+    bottom: 7rem;
+    right: 7rem;
+    background-color: #F48722;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.btn-group {
+    background-color: none;
+    border-radius: none;
+    width: 80px;
+    height: 50px;
+
+}
+
+.floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.floating-btn:hover i {
+    transform: rotate(90deg);
+}
+
+.floating-btn+.floating-btn {
+    margin-bottom: 10px;
+}
+
+.filter-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    text-decoration: none;
+    color: #ffff;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    /* دائري الأطراف */
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+
+}
+
+.filter-btn.active-filter {
+    background-color: #ff9f43;
+    color: #ffffff;
+    font-size: 2rem;
+}
+
+.filter-btn:hover {
+    background-color: #f8f9fa;
+    color: #ff9f43;
+}
+
+
+.content-header-page {
+    position: relative;
+    font-size: 5rem;
+    text-align: center;
+    color: #007bff;
+    margin: 20px 0;
+}
+
+.content-header-page::before,
+.content-header-page::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40%;
+    height: 2px;
+    background-color: #fff;
+}
+
+.content-header-page::before {
+    left: 0;
+    margin-right: 20px;
+    /* مسافة بين الخط الأيسر والنص */
+}
+
+.content-header-page::after {
+    right: 0;
+    margin-left: 20px;
+    /* مسافة بين الخط الأيمن والنص */
+}
+
+.tilted-card {
+    background-color: #1a1a2e;
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.about-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.about-section .btn {
+    transform: rotate(0deg);
+    /* لإبقاء الزر مستقيمًا */
+}
+
+.dz-button {
+    border: none !important;
+    background: none !important;
+    font-size: large !important;
+}

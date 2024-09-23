@@ -15,7 +15,10 @@ use App\Http\Middleware\Authentication;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\SectionController;
-
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\ContactMethodController;
+use App\Http\Controllers\aboutController;
+use App\Http\Controllers\CoursesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -93,7 +96,8 @@ Route::middleware([Authentication::class])->group(function () {
         Route::get("create/", [PriceController::class, "create"])->name("prices.create");
         Route::post("/", [PriceController::class, "store"])->name("prices.store");
         Route::get("edit/{id}", [PriceController::class, "edit"])->name("prices.edit");
-        Route::put("update", [PriceController::class, "update"])->name('prices.update');
+        Route::put('/prices/{id}', [PriceController::class, 'update'])->name('prices.update');
+
     });
     Route::group(["prefix" => "coupons"], function () {
         Route::get("/", [CouponController::class, "index"])->name("coupons.index");
@@ -125,7 +129,6 @@ Route::middleware([Authentication::class])->group(function () {
     Route::group(['prefix' => 'articles'], function () {
         Route::get('/', [ArticleController::class, 'index'])->name('articles.articles');
         Route::get('create', [ArticleController::class, 'create'])->name('articles.create');
-        Route::get('/{id}', [ArticleController::class, 'show'])->name('articles.show');
         Route::post('/', [ArticleController::class, 'store'])->name('articles.store');
         Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
         Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('articles.update');
@@ -142,7 +145,55 @@ Route::middleware([Authentication::class])->group(function () {
         Route::delete('/sections/{id}', [SectionController::class, 'delete'])->name('sections.delete');
         Route::post('/sections/toggle-visibility/{id}', [SectionController::class, 'toggleVisibility'])->name('sections.toggleVisibility');
     });
+    Route::group(['prefix' => 'contact'], function () {
+        Route::get('/', [ContactMethodController::class, 'index'])->name('contact.index');
+        Route::get('create', [ContactMethodController::class, 'create'])->name('contact.create');
+        Route::post('store', [ContactMethodController::class, 'store'])->name('contact.store');
+        Route::post('/contact/review', [ContactMethodController::class, 'review'])->name('contact.review');
+        Route::post('/updateItem', [ContactMethodController::class, 'updateItem'])->name('contact.updateItem');
+        Route::post('/deleteItem', [ContactMethodController::class, 'deleteItem'])->name('contact.deleteItem');
+        Route::post('/update', [ContactMethodController::class, 'update'])->name('contact.update');
+        Route::post('/delete', [ContactMethodController::class, 'delete'])->name('contact.delete');
+    });
+
+    Route::group(['prefix' => 'about'], function () {
+        Route::get('/', [aboutController::class, 'index'])->name('about.about');
+        Route::get('create-about', [aboutController::class, 'create'])->name('about.create');
+        Route::post('/', [aboutController::class, 'store'])->name('about.store');
+        Route::get('/edit/{id}', [aboutController::class, 'edit'])->name('about.edit');
+        Route::put('/about/{about}', [aboutController::class, 'update'])->name('about.update');
+        // Route::delete('/about/{id}', [SectionConaboutControllertroller::class, 'delete'])->name('about.delete');
+        // Route::post('/about/toggle-visibility/{id}', [aboutController::class, 'toggleVisibility'])->name('about.toggleVisibility');
+    });
+    Route::group(['prefix' => 'courses'], function () {
+        Route::get('/', [CoursesController::class, 'index'])->name('courses.courses');
+        Route::get('create', [CoursesController::class, 'create'])->name('courses.create');
+        Route::post('/', [CoursesController::class, 'store'])->name('courses.store');
+        Route::get('/edit/{id}', [CoursesController::class, 'edit'])->name('courses.edit');
+        Route::put('/courses/{course}', [CoursesController::class, 'update'])->name('courses.update');
+        Route::delete('/courses/{id}', [CoursesController::class, 'delete'])->name('courses.delete');
+        Route::post('/courses/toggle-visibility/{id}', [CoursesController::class, 'toggleVisibility'])->name('courses.toggleVisibility');
+    });
+    
 });
+
+Route::group([], function () {
+    Route::group(['prefix' => 'articles'], function () {
+        Route::get('/{id}', [ArticleController::class, 'show'])->name('articles.show');
+    });
+    Route::group(['prefix' => 'prices'], function () {
+        Route::get('/prices/show', [PriceController::class, 'show'])->name('prices.show');
+    });
+    Route::group(['prefix' => 'about'], function () {
+        Route::get('/show/{id}', [aboutController::class, 'show'])->name('about.show');
+    });
+    Route::group(['prefix' => 'courses'], function () {
+        Route::get('/show/{id}', [CoursesController::class, 'show'])->name('courses.show');
+    });
+
+});
+
+
 Route::get("/", [HomeController::class, "index"]);
 
 /** Authentication routes */

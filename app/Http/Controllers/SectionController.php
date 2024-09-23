@@ -68,7 +68,6 @@ class SectionController extends Controller
         return view('hiraa.sections.edit', compact('section'));
     }
 
-
     public function update(UpdateSectionRequest $request, $id)
     {
         $section = Section::findOrFail($id);
@@ -111,7 +110,6 @@ class SectionController extends Controller
 
         return redirect()->route('sections.sections')->with('success', 'Section updated successfully.');
     }
-
 
     public function delete($id)
     {

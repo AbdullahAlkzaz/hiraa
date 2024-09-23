@@ -21,8 +21,7 @@
     </style>
     <div class="app-content content content-app {{ $configData['pageClass'] }}">
         <!-- BEGIN: Header-->
-        {{-- <div class="content-overlay"></div>
-        <div class="header-navbar-shadow"></div> --}}
+        {{-- <div class="content-overlay"></div> --}}
         @if ($configData['contentLayout'] !== 'default' && isset($configData['contentLayout']))
             <div class="content-area-wrapper {{ $configData['layoutWidth'] === 'boxed' ? 'container-xxl p-0' : '' }}">
                 <div class="{{ $configData['contentsidebarClass'] }}">
@@ -42,6 +41,9 @@
                 </div>
             </div>
         @endif
+        {{-- include contactUs --}}
+        @include('panels.panels.contactUs')
+
     </div>
     <!-- End: Content-->
     <div class="sidenav-overlay"></div>
