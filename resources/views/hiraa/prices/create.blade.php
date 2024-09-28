@@ -132,7 +132,7 @@ href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
 </style>
 
 
-@endsection
+@stop
 
 @section('page-script')
 <!-- BEGIN: Page Vendor JS-->

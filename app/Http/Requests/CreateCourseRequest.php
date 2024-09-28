@@ -36,6 +36,7 @@ class CreateCourseRequest extends FormRequest
             'cards.*.title' => 'required|string',
             'cards.*.body' => 'required|string',
             'cards.*.button_name' => 'required|string',
+            'target_audience' => 'required|string|in:children,adults,both',
         ];
     }
 }

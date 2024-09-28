@@ -19,6 +19,8 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\ContactMethodController;
 use App\Http\Controllers\aboutController;
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\StudentsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -97,7 +99,6 @@ Route::middleware([Authentication::class])->group(function () {
         Route::post("/", [PriceController::class, "store"])->name("prices.store");
         Route::get("edit/{id}", [PriceController::class, "edit"])->name("prices.edit");
         Route::put('/prices/{id}', [PriceController::class, 'update'])->name('prices.update');
-
     });
     Route::group(["prefix" => "coupons"], function () {
         Route::get("/", [CouponController::class, "index"])->name("coupons.index");
@@ -174,7 +175,14 @@ Route::middleware([Authentication::class])->group(function () {
         Route::delete('/courses/{id}', [CoursesController::class, 'delete'])->name('courses.delete');
         Route::post('/courses/toggle-visibility/{id}', [CoursesController::class, 'toggleVisibility'])->name('courses.toggleVisibility');
     });
-    
+
+    Route::group(['prefix' => 'students'], function () {
+        Route::get('/', [StudentsController::class, 'index'])->name('students.students');
+        Route::get('registration', [StudentsController::class, 'registration'])->name('students.registration');
+        Route::post('/', [StudentsController::class, 'store'])->name('students.register');
+        Route::get('/edit/{id}', [StudentsController::class, 'edit'])->name('registration.edit');
+        Route::put('/registration/{registration}', [StudentsController::class, 'update'])->name('registration.update');
+    });
 });
 
 Route::group([], function () {
@@ -190,7 +198,6 @@ Route::group([], function () {
     Route::group(['prefix' => 'courses'], function () {
         Route::get('/show/{id}', [CoursesController::class, 'show'])->name('courses.show');
     });
-
 });
 
 

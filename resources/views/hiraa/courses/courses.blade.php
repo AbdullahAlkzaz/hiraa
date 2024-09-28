@@ -2,8 +2,7 @@
 @section('title', 'Courses')
 
 @push('style')
-    <link rel="stylesheet"
-        href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
 @endpush
 
 @section('content')
@@ -11,7 +10,7 @@
         <i class="fas fa-plus"></i>
     </a>
 
-    @if(session('message'))
+    @if (session('message'))
         <div class="alert alert-success">
             {{ session('message') }}
         </div>
@@ -27,14 +26,12 @@
         td {
             height: 70px;
         }
-
     </style>
     <style>
-    .hidden-course {
-        background-color: #f8d7da;
-    }
-
-</style>
+        .hidden-course {
+            background-color: #f8d7da;
+        }
+    </style>
 
 
     <table class="table mt-3">
@@ -49,23 +46,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($courses as $course)
+            @foreach ($courses as $course)
                 <tr ondblclick="window.location.href='{{ route('courses.show', $course->id) }}'"
-                    data-course-id="{{ $course->id }}"
-                    class="{{ $course->is_hidden ? 'hidden-course' : '' }}">
+                    data-course-id="{{ $course->id }}" class="{{ $course->is_hidden ? 'hidden-course' : '' }}">
                     <td>{{ $course->name }}</td>
                     <td>{{ $course->title }}</td>
-                    <td>{!! $course->description !!}</td>
+                    <td>{!! \Illuminate\Support\Str::limit(strip_tags($course->description), 150, '...') !!}</td>
                     <td>
-                        <img src="{{ asset('storage/' . $course->image) }}"
-                            alt="Course Image">
+                        <img src="{{ asset('storage/' . $course->image) }}" alt="Course Image">
                     </td>
                     <td>
-                        @if(!empty($course->card))
+                        @if (!empty($course->card))
                             @php
                                 $cards = json_decode($course->card, true); // فك تشفير JSON إلى مصفوفة
                             @endphp
-                            @foreach($cards as $card)
+                            @foreach ($cards as $card)
                                 <div>
                                     <strong>Title:</strong> {{ $card['title'] }}<br>
                                 </div>
@@ -82,8 +77,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('courses.edit', $course->id) }}">
+                                    <a class="dropdown-item" href="{{ route('courses.edit', $course->id) }}">
                                         <i data-feather="edit"></i> Edit
                                     </a>
                                 </li>
@@ -92,8 +86,8 @@
                                         <i data-feather="delete"></i> Delete
                                     </a>
                                     <form id="delete-form-{{ $course->id }}"
-                                        action="{{ route('courses.delete', $course->id) }}"
-                                        method="POST" style="display: none;">
+                                        action="{{ route('courses.delete', $course->id) }}" method="POST"
+                                        style="display: none;">
                                         @csrf
                                         @method('DELETE')
                                     </form>
@@ -123,163 +117,163 @@
 @stop
 
 @section('page-script')
-<!-- BEGIN: Page Vendor JS-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
-<script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
-<!-- END: Page Vendor JS-->
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
+    <!-- END: Page Vendor JS-->
 
-<script>
-    function confirmDelete(courseId) {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You will delete the Course!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "Cancel",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + courseId).submit();
-            }
-        });
-    }
-
-    function confirmDelete(courseId) {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You will delete this Course!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "Cancel",
-            buttonsStyling: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + courseId).submit();
-            }
-        });
-
-        $('.swal2-actions').css({
-            'display': 'flex',
-            'justify-content': 'space-between',
-            'width': '100%'
-        });
-
-        $('.swal2-confirm').css({
-            'background-color': '#3085d6',
-            'color': '#fff',
-            'border': 'none',
-            'padding': '10px 20px',
-            'border-radius': '5px',
-            'cursor': 'pointer',
-            'flex': '0 1 auto',
-            'margin-right': '10px'
-        });
-
-        $('.swal2-cancel').css({
-            'background-color': '#d33',
-            'color': '#fff',
-            'border': 'none',
-            'padding': '10px 20px',
-            'border-radius': '5px',
-            'cursor': 'pointer',
-            'flex': '0 1 auto',
-            'margin-left': '10px'
-        });
-    }
-
-    function toggleVisibility(courseId) {
-    Swal.fire({
-        title: "Are you sure?",
-        text: "You will change the Course's visibility!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: "Yes, change visibility!",
-        cancelButtonText: "Cancel",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '{{ route('courses.toggleVisibility', ':id') }}'.replace(':id', courseId),
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function (response) {
-                    // Change the icon and text based on visibility
-                    if (response.is_hidden) {
-                        $('#icon-' + courseId).attr('data-feather', 'eye-off');
-                        $('#view-text-' + courseId).text('Hidden');
-                        $('tr[data-course-id="' + courseId + '"]').addClass('hidden-course');
-                    } else {
-                        $('#icon-' + courseId).attr('data-feather', 'eye');
-                        $('#view-text-' + courseId).text('View');
-                        $('tr[data-course-id="' + courseId + '"]').removeClass('hidden-course');
-                    }
-                    feather.replace();
-
-                    // Show success message
-                    Swal.fire({
-                        title: "Updated!",
-                        text: "The course's visibility has been changed successfully.",
-                        icon: 'success',
-                        confirmButtonText: "Okay"
-                    }).then(() => {
-                        window.location.href = '{{ route('courses.courses') }}';
-                    });
-                },
-                error: function (error) {
-                    Swal.fire("Error!", "An error occurred while trying to change the visibility.", 'error');
+    <script>
+        function confirmDelete(courseId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will delete the Course!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + courseId).submit();
                 }
             });
         }
-    });
 
-    // Customize the Swal buttons (optional)
-    customizeSwalButtons();
-}
+        function confirmDelete(courseId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will delete this Course!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel",
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + courseId).submit();
+                }
+            });
 
-function customizeSwalButtons() {
-    $('.swal2-actions').css({
-        'display': 'flex',
-        'justify-content': 'space-between',
-        'width': '100%'
-    });
+            $('.swal2-actions').css({
+                'display': 'flex',
+                'justify-content': 'space-between',
+                'width': '100%'
+            });
 
-    $('.swal2-confirm').css({
-        'background-color': '#3085d6',
-        'color': '#fff',
-        'border': 'none',
-        'padding': '10px 20px',
-        'border-radius': '5px',
-        'cursor': 'pointer',
-        'flex': '0 1 auto',
-        'margin-right': '10px'
-    });
+            $('.swal2-confirm').css({
+                'background-color': '#3085d6',
+                'color': '#fff',
+                'border': 'none',
+                'padding': '10px 20px',
+                'border-radius': '5px',
+                'cursor': 'pointer',
+                'flex': '0 1 auto',
+                'margin-right': '10px'
+            });
 
-    $('.swal2-cancel').css({
-        'background-color': '#d33',
-        'color': '#fff',
-        'border': 'none',
-        'padding': '10px 20px',
-        'border-radius': '5px',
-        'cursor': 'pointer',
-        'flex': '0 1 auto',
-        'margin-left': '10px'
-    });
-}
+            $('.swal2-cancel').css({
+                'background-color': '#d33',
+                'color': '#fff',
+                'border': 'none',
+                'padding': '10px 20px',
+                'border-radius': '5px',
+                'cursor': 'pointer',
+                'flex': '0 1 auto',
+                'margin-left': '10px'
+            });
+        }
 
-    function copyToClipboard(text) {
-        var tempInput = $('<input>');
-        $('body').append(tempInput);
-        tempInput.val(text).select();
-        document.execCommand('copy');
-        tempInput.remove();
-    }
+        function toggleVisibility(courseId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will change the Course's visibility!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yes, change visibility!",
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route('courses.toggleVisibility', ':id') }}'.replace(':id', courseId),
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            // Change the icon and text based on visibility
+                            if (response.is_hidden) {
+                                $('#icon-' + courseId).attr('data-feather', 'eye-off');
+                                $('#view-text-' + courseId).text('Hidden');
+                                $('tr[data-course-id="' + courseId + '"]').addClass('hidden-course');
+                            } else {
+                                $('#icon-' + courseId).attr('data-feather', 'eye');
+                                $('#view-text-' + courseId).text('View');
+                                $('tr[data-course-id="' + courseId + '"]').removeClass('hidden-course');
+                            }
+                            feather.replace();
 
-</script>
-<script>
-        $(document).ready(function () {
-            $('.share-link').on('click', function (e) {
+                            // Show success message
+                            Swal.fire({
+                                title: "Updated!",
+                                text: "The course's visibility has been changed successfully.",
+                                icon: 'success',
+                                confirmButtonText: "Okay"
+                            }).then(() => {
+                                window.location.href = '{{ route('courses.courses') }}';
+                            });
+                        },
+                        error: function(error) {
+                            Swal.fire("Error!",
+                                "An error occurred while trying to change the visibility.", 'error');
+                        }
+                    });
+                }
+            });
+
+            // Customize the Swal buttons (optional)
+            customizeSwalButtons();
+        }
+
+        function customizeSwalButtons() {
+            $('.swal2-actions').css({
+                'display': 'flex',
+                'justify-content': 'space-between',
+                'width': '100%'
+            });
+
+            $('.swal2-confirm').css({
+                'background-color': '#3085d6',
+                'color': '#fff',
+                'border': 'none',
+                'padding': '10px 20px',
+                'border-radius': '5px',
+                'cursor': 'pointer',
+                'flex': '0 1 auto',
+                'margin-right': '10px'
+            });
+
+            $('.swal2-cancel').css({
+                'background-color': '#d33',
+                'color': '#fff',
+                'border': 'none',
+                'padding': '10px 20px',
+                'border-radius': '5px',
+                'cursor': 'pointer',
+                'flex': '0 1 auto',
+                'margin-left': '10px'
+            });
+        }
+
+        function copyToClipboard(text) {
+            var tempInput = $('<input>');
+            $('body').append(tempInput);
+            tempInput.val(text).select();
+            document.execCommand('copy');
+            tempInput.remove();
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.share-link').on('click', function(e) {
                 e.preventDefault();
                 var link = $(this).data('url');
                 showShareModal(link);
@@ -336,6 +330,5 @@ function customizeSwalButtons() {
             });
 
         }
-
     </script>
 @endsection

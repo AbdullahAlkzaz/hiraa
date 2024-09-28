@@ -19578,7 +19578,8 @@ html .vertical-dashboard{
 }
 
 html body p {
-  line-height: 1.5rem;
+  line-height: 3rem;
+  font-size: 2rem;
 }
 
 html .content {
@@ -19595,7 +19596,7 @@ html .dashboard {
 }
 
 html .content.content-app {
-  padding: calc(2rem + 2.55rem + -3.7rem) 2rem 0;
+  padding: calc(2rem + 6.55rem + -3.7rem) 2rem 0;
 }
 
 html .content.dashboard {

@@ -236,31 +236,49 @@ textarea.form-control.editor {
 }
 
 /* Animation Styles */
+.section {
+    position: relative;
+    /* تأكد من أن القسم يحتفظ بالموضع النسبي */
+    overflow: hidden;
+    /* منع أي شريط تمرير */
+}
+
 .animated {
     transition: transform 0.7s ease-out, opacity 0.7s ease-out;
     opacity: 1;
+    /* يبدأ opacity من 1 عند تفعيل الأنيميشن */
+}
+
+.animate-from-left,
+.animate-from-right,
+.animate-from-bottom {
+    opacity: 0;
+    /* يبدأ من حالة مخفية */
 }
 
 .animate-from-left {
-    transform: translateX(-10%);
-    opacity: 0;
+    transform: translateX(-20%);
+    /* زيادة المسافة قليلاً */
 }
 
 .animate-from-right {
-    transform: translateX(10%);
-    opacity: 0;
+    transform: translateX(20%);
+    /* زيادة المسافة قليلاً */
 }
 
 .animate-from-bottom {
-    transform: translateY(10%);
-    opacity: 0;
+    transform: translateY(20%);
+    /* زيادة المسافة قليلاً */
 }
 
+/* عند تفعيل الأنيميشن */
 .animated.animate-from-left,
 .animated.animate-from-right,
 .animated.animate-from-bottom {
     transform: translateX(0);
+    /* إرجاع العنصر إلى موضعه الأصلي */
     opacity: 1;
+    /* إظهار العنصر */
 }
 
 /* Share Link Styles */
@@ -606,16 +624,6 @@ i.fa-telegram {
     margin: 20px auto;
 }
 
-.about-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.about-section .btn {
-    transform: rotate(0deg);
-    /* لإبقاء الزر مستقيمًا */
-}
 
 .dz-button {
     border: none !important;

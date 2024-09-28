@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\About;
 use App\Models\Section;
+use App\Models\Course;
 use App\Services\ContactMethodService;
 
 class HomeController extends Controller
@@ -27,6 +28,11 @@ class HomeController extends Controller
             ->take(6)  
             ->get();
 
+            $courses = Course::where('is_hidden', false)
+            ->latest()            
+            ->take(6)  
+            ->get();
+
         // جلب معلومات الـ "About"
         $about = About::first();
 
@@ -42,6 +48,7 @@ class HomeController extends Controller
         return view('hiraa.home.index')->with([
             'sections' => $sections,
             'articles' => $articles,
+            'courses' => $courses,
             'contactIcons' => $contactIcons,
             'about' => $about,
         ]);

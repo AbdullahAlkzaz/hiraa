@@ -2,16 +2,14 @@
 @section('title', 'Prices')
 
 @push('style')
-    <link rel="stylesheet"
-        href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
 @endpush
 
 @section('content')
-<div class="container">
     <a href="{{ route('prices.create') }}" class="btn floating-btn">
         <i class="fas fa-plus"></i>
     </a>
-    @if(session('message'))
+    @if (session('message'))
         <div class="alert alert-success">
             {{ session('message') }}
         </div>
@@ -33,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($prices as $price)
+            @foreach ($prices as $price)
                 <tr>
                     <td>{{ $price->price }}</td>
                     <td>{{ $price->coupon }}</td>
@@ -45,7 +43,7 @@
                     <td>{{ $price->coupon_end_date }}</td>
                     <td>
                         <ul>
-                            @foreach($price->features as $feature)
+                            @foreach ($price->features as $feature)
                                 <li>{{ $feature }}</li>
                             @endforeach
                         </ul>
@@ -58,8 +56,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('prices.edit', $price->id) }}">
+                                    <a class="dropdown-item" href="{{ route('prices.edit', $price->id) }}">
                                         <i data-feather="edit"></i> Edit
                                     </a>
                                 </li>
@@ -68,8 +65,8 @@
                                         <i data-feather="delete"></i> Delete
                                     </a>
                                     <form id="delete-form-{{ $price->id }}"
-                                        action="{{ route('prices.destroy', $price->id) }}"
-                                        method="POST" style="display: none;">
+                                        action="{{ route('prices.destroy', $price->id) }}" method="POST"
+                                        style="display: none;">
                                         @csrf
                                         @method('DELETE')
                                     </form>
@@ -84,92 +81,90 @@
 
 
     {{ $prices->links() }}
-</div>
-@endsection
+@stop
 
 @section('page-script')
-<!-- BEGIN: Page Vendor JS-->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
-<script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
-<!-- END: Page Vendor JS-->
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
+    <!-- END: Page Vendor JS-->
 
-<script>
-    function confirmDelete(priceId) {
-        if (confirm('Are you sure you want to delete this price?')) {
-            document.getElementById('delete-form-' + priceId).submit();
-        }
-    }
-
-</script>
-
-<script>
-    function confirmDelete(priceId) {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You will delete the article!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "Cancel",
-            buttonsStyling: false
-        }).then((result) => {
-            if (result.isConfirmed) {
+    <script>
+        function confirmDelete(priceId) {
+            if (confirm('Are you sure you want to delete this price?')) {
                 document.getElementById('delete-form-' + priceId).submit();
             }
-        });
-
-        $('.swal2-actions').css({
-            'display': 'flex',
-            'justify-content': 'space-between',
-            'width': '100%'
-        });
-
-        $('.swal2-confirm').css({
-            'background-color': '#3085d6',
-            'color': '#fff',
-            'border': 'none',
-            'padding': '10px 20px',
-            'border-radius': '5px',
-            'cursor': 'pointer',
-            'flex': '0 1 auto',
-            'margin-right': '10px'
-        });
-
-        $('.swal2-cancel').css({
-            'background-color': '#d33',
-            'color': '#fff',
-            'border': 'none',
-            'padding': '10px 20px',
-            'border-radius': '5px',
-            'cursor': 'pointer',
-            'flex': '0 1 auto',
-            'margin-left': '10px'
-        });
-    }
-
-    function sharePrice(url) {
-        if (navigator.share) {
-            navigator.share({
-                    title: $(document).find("title").text(),
-                    text: 'Check out this price!',
-                    url: url,
-                })
-                .then(() => console.log('Price shared successfully!'))
-                .catch((error) => console.error('Error sharing price:', error));
-        } else {
-            // Fallback: Copy the URL to clipboard
-            copyToClipboard(url);
-            alert('The link has been copied to your clipboard.');
         }
-    }
+    </script>
 
-    function copyToClipboard(text) {
-        var tempInput = $('<input>');
-        $('body').append(tempInput);
-        tempInput.val(text).select();
-        document.execCommand('copy');
-        tempInput.remove();
-    }
-</script>
+    <script>
+        function confirmDelete(priceId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will delete the article!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel",
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + priceId).submit();
+                }
+            });
+
+            $('.swal2-actions').css({
+                'display': 'flex',
+                'justify-content': 'space-between',
+                'width': '100%'
+            });
+
+            $('.swal2-confirm').css({
+                'background-color': '#3085d6',
+                'color': '#fff',
+                'border': 'none',
+                'padding': '10px 20px',
+                'border-radius': '5px',
+                'cursor': 'pointer',
+                'flex': '0 1 auto',
+                'margin-right': '10px'
+            });
+
+            $('.swal2-cancel').css({
+                'background-color': '#d33',
+                'color': '#fff',
+                'border': 'none',
+                'padding': '10px 20px',
+                'border-radius': '5px',
+                'cursor': 'pointer',
+                'flex': '0 1 auto',
+                'margin-left': '10px'
+            });
+        }
+
+        function sharePrice(url) {
+            if (navigator.share) {
+                navigator.share({
+                        title: $(document).find("title").text(),
+                        text: 'Check out this price!',
+                        url: url,
+                    })
+                    .then(() => console.log('Price shared successfully!'))
+                    .catch((error) => console.error('Error sharing price:', error));
+            } else {
+                // Fallback: Copy the URL to clipboard
+                copyToClipboard(url);
+                alert('The link has been copied to your clipboard.');
+            }
+        }
+
+        function copyToClipboard(text) {
+            var tempInput = $('<input>');
+            $('body').append(tempInput);
+            tempInput.val(text).select();
+            document.execCommand('copy');
+            tempInput.remove();
+        }
+    </script>
 
 @endsection
